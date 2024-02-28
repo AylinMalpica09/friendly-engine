@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/initial_page.dart'; //widgets
+import 'package:prueba_2/pages/initial_page.dart';
+import 'package:prueba_2/pages/pending_page.dart'; //widgets
 
 class MyHomePage extends StatefulWidget {//widgets
   const MyHomePage({super.key, required this.title});
@@ -17,10 +18,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     Color bar = Color(0xFFDDA15E);
     return MaterialApp(
-      routes: {
-
-      },
-
 
       home: Scaffold(
         body: Stack(
@@ -38,16 +35,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             // Contenido
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.only(left: 2),
-                  // Margen izquierdo para el texto
+                  padding: EdgeInsets.only(left: 55), // Ajusta el margen izquierdo aquí
                   child: Text(
                     'Libros actuales',
                     style: TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 26,
+                      fontSize: 25,
                       color: Color(0xFFFFFFFF),
                     ),
                   ),
@@ -88,21 +85,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           SizedBox(height: 10),
                           _buildBookRow(
-                              'assets/img/estrellas.png', 'Estrellas fugaces', 'Robyn Schneider',
+                              'assets/img/analista.png', 'El Psicoanalista', 'John Katzenbach',
+                              'assets/img/boulevard.png', 'Boulevard', 'Flor Salvador'
+                          ),
+                          _buildBookRow(
+                              'assets/img/ladrona.png', 'La ladrona de libros', 'Markus Zusak',
                               'assets/img/limpio.png', 'Código limpio', 'Robert C. Martin'
                           ),
-                          _buildBookRow(
-                              'assets/img/ladrona.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/boulevard.png', 'Código limpio', 'Robert C. Martin'
-                          ),
-                          _buildBookRow(
-                              'assets/img/analista.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/principe.png', 'Código limpio', 'Robert C. Martin'
-                          ),
-                          _buildBookRow(
-                              'assets/img/estrellas.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/limpio.png', 'Código limpio', 'Robert C. Martin'
-                          ),
+
                         ],
                       ),
                     ),
@@ -121,37 +111,56 @@ class _MyHomePageState extends State<MyHomePage> {
           items: [
 
             BottomNavigationBarItem(
-
-              backgroundColor: Colors.lightBlueAccent,
-              icon: Image.asset(
-                'assets/icons/home.png',
-                width: 24,
-                height: 24,
+              backgroundColor: bar,
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/home');
+                  //Navigator.pushNamed(context, '/pending');
+                },
+                child: Image.asset(
+                  'assets/icons/home.png',
+                  width: 24,
+                  height: 24,
+                ),
               ),
               label: '',
             ),
             BottomNavigationBarItem(
-              backgroundColor: Colors.deepPurple,
-              icon: Image.asset(
-                'assets/icons/pending.png',
-                width: 24,
-                height: 24,
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/pending');
+                },
+                child: Image.asset(
+                  'assets/icons/pending.png',
+                  width: 24,
+                  height: 24,
+                ),
               ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/icons/add.png',
-                width: 24,
-                height: 24,
+              icon: GestureDetector(
+                onTap: () {
+                  //Navigator.pushNamed(context, '/');
+                },
+                child: Image.asset(
+                  'assets/icons/add.png',
+                  width: 24,
+                  height: 24,
+                ),
               ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/icons/books.png',
-                width: 24,
-                height: 24,
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/library');
+                },
+                child: Image.asset(
+                  'assets/icons/books.png',
+                  width: 24,
+                  height: 24,
+                ),
               ),
               label: '',
             ),
@@ -161,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.pushNamed(context, '/');
                 },
                 child: Image.asset(
-                  'assets/icons/home.png',
+                  'assets/icons/profile.png',
                   width: 24,
                   height: 24,
                 ),
@@ -197,8 +206,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Título del primer libro
                 Text(
                   title1,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontFamily: 'Manrope',
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -206,7 +217,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Autor del primer libro
                 Text(
                   author1,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     color: Colors.black,
                   ),
@@ -232,8 +245,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Título del segundo libro
                 Text(
                   title2,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontFamily: 'Manrope',
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -241,7 +256,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Autor del segundo libro
                 Text(
                   author2,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     color: Colors.black,
                   ),

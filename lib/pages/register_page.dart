@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/home_page.dart';
-import 'package:prueba_2/initial_page.dart';
+import 'package:prueba_2/pages/home_page.dart';
+import 'package:prueba_2/pages/initial_page.dart';
 
 class MyRegisterPage extends StatefulWidget {
   const MyRegisterPage({Key? key, required this.title}) : super(key: key);
@@ -20,6 +20,7 @@ class _MyHomePageState extends State<MyRegisterPage> {
 
   Color miColor = Color(0xFF4D5840);
   Color miB = Color(0xFFDDA15E);
+  Color colorFondo = Color(0xFFEFEFED);
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +81,7 @@ class _MyHomePageState extends State<MyRegisterPage> {
                     '¡Regístrate!',
                     textAlign: TextAlign.center,
                     style: TextStyle(
+                      fontFamily: 'Manrope',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
@@ -89,80 +91,80 @@ class _MyHomePageState extends State<MyRegisterPage> {
                     controller: name,
                     decoration: InputDecoration(
                       labelText: 'Nombre completo',
-                      prefixIcon: Icon(Icons.sort_by_alpha, color: Colors.white, size: 20),
-                      fillColor: miColor,
+                      prefixIcon: Icon(Icons.sort_by_alpha, color: miColor, size: 20),
+                      fillColor: colorFondo,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+                      labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15),
+                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                   SizedBox(height: 20),
                   TextField(
                     controller: username,
                     decoration: InputDecoration(
                       labelText: 'Nombre de usuario',
-                      prefixIcon: Icon(Icons.person, color: Colors.white, size: 20),
-                      fillColor: miColor,
+                      prefixIcon: Icon(Icons.person, color: miColor, size: 20),
+                      fillColor: colorFondo,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+                      labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15),
+                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                   SizedBox(height: 20),
                   TextField(
                     controller: email,
                     decoration: InputDecoration(
                       labelText: 'Correo electrónico',
-                      prefixIcon: Icon(Icons.email, color: Colors.white, size: 20),
-                      fillColor: miColor,
+                      prefixIcon: Icon(Icons.email, color: miColor, size: 20),
+                      fillColor: colorFondo,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+                      labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15),
+                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                   SizedBox(height: 20),
                   TextField(
                     controller: password,
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
-                      prefixIcon: Icon(Icons.password, color: Colors.white,size: 20),
-                      fillColor: miColor,
+                      prefixIcon: Icon(Icons.password, color: miColor,size: 20),
+                      fillColor: colorFondo,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+                      labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15),
+                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                   SizedBox(height: 20),
                   TextField(
                     controller: datebirth,
                     decoration: InputDecoration(
                       labelText: 'Fecha de nacimiento',
-                      prefixIcon: Icon(Icons.calendar_month, color: Colors.white, size: 20),
-                      fillColor: miColor,
+                      prefixIcon: Icon(Icons.calendar_month, color: miColor, size: 20),
+                      fillColor: colorFondo,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+                      labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15),
+                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                 ],
               ),
@@ -191,6 +193,8 @@ class _MyHomePageState extends State<MyRegisterPage> {
                     Text(
                       'Registrarse',
                       style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontWeight: FontWeight.w600,
                         color: Colors.white,
                         fontSize: 20,
                       ),
