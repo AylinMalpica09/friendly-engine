@@ -1,145 +1,120 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/home_page.dart'; //widgets
+import 'package:prueba_2/home_page.dart';
+import 'package:prueba_2/initial_page.dart';
 
-class MyLoginPage extends StatefulWidget {//widgets
-  const MyLoginPage({super.key, required this.title});
+
+class MyLogInPage extends StatefulWidget {
+  const MyLogInPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyLoginPage> createState() => _MyLoginPageState();
+  State<MyLogInPage> createState() => _MyHomePageState();
 }
 
-class _MyLoginPageState extends State<MyLoginPage> {
-  //state
+class _MyHomePageState extends State<MyLogInPage> {
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  Color miColor = Color(0xFF4D5840);
+  Color miB = Color(0xFFDDA15E);
 
   @override
-/*
   Widget build(BuildContext context) {
-    Color colorFondo = Color(0xFFEFEFED);
-    Color colorBoton1 = Color(0xFFDDA15E);
-    return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Widget para la imagen de fondo
-            Expanded(
-              flex: 1, // Ocupa la mitad de la pantalla
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/img/home.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // Puedes añadir otros widgets dentro de este contenedor si lo necesitas
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Fondo con la imagen
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/img/login.png'),
+                fit: BoxFit.cover,
               ),
-            ),
-            // Widget para el título y los botones
-            Expanded(
-              flex: 1, // Ocupa la otra mitad de la pantalla
-              child: Container(
-                color: colorFondo, // Color de fondo
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            'Kiboowi',
-                            style: TextStyle(
-                              fontFamily: 'Montez',
-                              fontSize: 48,
-                              //fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(5.0), // Ajusta el espaciado según sea necesario
-                          child: Image.asset(
-                            'assets/img/logo.png', // Ruta de la imagen
-                            width: 40, // Ancho de la imagen
-                            height: 40, // Alto de la imagen
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 250, // Ancho máximo deseado para el texto
-                      child: Text(
-                        '¡Comencemos a descubrir otros mundos!',
-                        textAlign: TextAlign.center, // Alinea el texto al centro
-                        style: TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 18.0,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 35),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 35), // Ajusta el tamaño del botón
-                        textStyle: TextStyle(fontSize: 20), // Ajusta el tamaño del texto del botón
-                        backgroundColor: colorBoton1,
-                      ),
-                      child: Text(
-                          'Iniciar sesión',
-                          style: TextStyle(
-                            color: Color(0xFFECF0F1),
-                      ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 35), // Ajusta el tamaño del botón
-                        side: BorderSide(color: Color(0xFF283618)),
-                        backgroundColor: colorFondo,
-                        textStyle: TextStyle(
-                            fontSize: 20,
-                        ), // Ajusta el tamaño del texto del botón
-                      ),
-                      child: Text(
-                          'Registrarse',
-                        style: TextStyle(
-                          color: Color(0xFF283618),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}*/
-  Widget build(BuildContext context) {
-    Color colorBoton1 = Color(0xFF4D5840);
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/img/login.png'),
-              fit: BoxFit.cover,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Primera sección (fila) con un botón
-              Row(
+          // Botón de regreso
+          Positioned(
+            top: 40,
+            left: 20,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyInitialPage(title: 'login')), // Navega a la vista LoginPage
+                );
+              },
+              child: Center(
+                child: Icon(
+                  Icons.arrow_back,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: miColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ),
+          // Contenido central
+          Center(
+            child: Container(
+              margin: EdgeInsets.only(top: 100), // Ajusta según sea necesario
+              width: 300,
+              height: 500,
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Text(
+                    '¡Bienvenido!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  // Resto del contenido del formulario
+                  TextField(
+                    controller: email,
+                    decoration: InputDecoration(
+                      labelText: 'Correo electrónico',
+                      prefixIcon: Icon(Icons.email, color: Colors.white),
+                      fillColor: miColor,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      labelStyle: TextStyle(color: Colors.white),
+                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 8),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: password,
+                    decoration: InputDecoration(
+                      labelText: 'Contraseña',
+                      prefixIcon: Icon(Icons.password, color: Colors.white),
+                      fillColor: miColor,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      labelStyle: TextStyle(color: Colors.white),
+                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 8),
+                  ),
+                  SizedBox(height: 20),
+                  // Botón de registro
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -148,49 +123,35 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                      primary: miB,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),),
-                        backgroundColor: colorBoton1,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
-                    child: Icon(Icons.arrow_back,
-                        color: Color(0xFFFEFAE0),
-                    ),
-                  ),
-                ],
-              ),
-              // Segunda sección (fila) con un contenedor centrado que contiene botones
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            // Acción del primer botón
-                          },
-                          child: Text('Botón 2'),
+                        Text(
+                          'Registrarse',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Acción del segundo botón
-                          },
-                          child: Text('Botón 3'),
+                        SizedBox(width: 8),
+                        Image.asset(
+                          'assets/img/kiwi.png',
+                          width: 24,
+                          height: 24,
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

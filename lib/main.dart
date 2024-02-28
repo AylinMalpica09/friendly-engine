@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/home_page.dart'; //widgets
+import 'package:prueba_2/initial_page.dart'; //widgets
 
 
 void main() {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyInitialPage(title: 'Flutter Demo Home Page'),
     );
   }
 }

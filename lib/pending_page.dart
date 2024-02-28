@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:prueba_2/initial_page.dart'; //widgets
 
-class MyHomePage extends StatefulWidget {//widgets
-  const MyHomePage({super.key, required this.title});
+class MyPendingPage extends StatefulWidget {//widgets
+  const MyPendingPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyPendingPage> createState() => _MyPendingPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyPendingPageState extends State<MyPendingPage> {
   //state
 
   @override
@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.only(left: 2),
                   // Margen izquierdo para el texto
                   child: Text(
-                    'Libros actuales',
+                    'Libros pendientes',
                     style: TextStyle(
                       fontFamily: 'Manrope',
                       fontSize: 26,
@@ -114,15 +114,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          //backgroundColor: Colors.lightBlueAccent, // Color de fondo de la barra de navegación
-          //unselectedItemColor: Colors.black,
-          //selectedItemColor: Colors.lightBlueAccent, // Color de los íconos no seleccionados
-          //fixedColor: Colors.lightBlueAccent,
+          backgroundColor: Colors.lightBlueAccent, // Color de fondo de la barra de navegación
+          unselectedItemColor: Colors.black,
+          selectedItemColor: Colors.lightBlueAccent, // Color de los íconos no seleccionados
           items: [
-
             BottomNavigationBarItem(
-
-              backgroundColor: Colors.lightBlueAccent,
               icon: Image.asset(
                 'assets/icons/home.png',
                 width: 24,
@@ -131,7 +127,6 @@ class _MyHomePageState extends State<MyHomePage> {
               label: '',
             ),
             BottomNavigationBarItem(
-              backgroundColor: Colors.deepPurple,
               icon: Image.asset(
                 'assets/icons/pending.png',
                 width: 24,
@@ -161,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.pushNamed(context, '/');
                 },
                 child: Image.asset(
-                  'assets/icons/home.png',
+                  'assets/icons/profile.png',
                   width: 24,
                   height: 24,
                 ),
