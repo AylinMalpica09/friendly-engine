@@ -69,6 +69,7 @@ flutter:
     - assets/img/home.png
     - assets/img/logo.png
     - assets/img/login.png
+    - assets/img/perfil.png
     - assets/img/homePage.png
     - assets/img/analista.png
     - assets/img/boulevard.png
@@ -93,6 +94,8 @@ flutter:
     - assets/icons/home.png
     - assets/icons/pending.png
     - assets/icons/profile.png
+    - assets/icons/vector.png
+    - assets/icons/salida.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -112,15 +112,18 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
           items: [
             BottomNavigationBarItem(
               backgroundColor: bar,
-              icon: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/home');
-                  //Navigator.pushNamed(context, '/pending');
-                },
-                child: Image.asset(
-                  'assets/icons/home.png',
-                  width: 24,
-                  height: 24,
+              icon: Padding(
+                padding: const EdgeInsets.only(top: 10), // Ajusta el margen superior aquí
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/home');
+                    //Navigator.pushNamed(context, '/pending');
+                  },
+                  child: Image.asset(
+                    'assets/icons/home.png',
+                    width: 28,
+                    height: 28,
+                  ),
                 ),
               ),
               label: '',
@@ -142,7 +145,7 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  //Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/books');
                 },
                 child: Image.asset(
                   'assets/icons/add.png',

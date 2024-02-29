@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:prueba_2/pages/book_page.dart';
 import 'package:prueba_2/pages/home_page.dart';
 import 'package:prueba_2/pages/initial_page.dart';
 import 'package:prueba_2/pages/library_page.dart';
-import 'package:prueba_2/pages/pending_page.dart'; //widgets
+import 'package:prueba_2/pages/pending_page.dart';
+import 'package:prueba_2/pages/profile_page.dart';
 
 
 void main() {
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => MyHomePage(title: 'title'),
         '/pending': (context) => MyPendingPage(title: 'title'),
         '/library': (context) => MyLibraryPage(title: 'title'),
+        '/profile': (context) => MyProfilePage(title: 'title'),
+        '/books': (context) => MyBookPage(title: 'title'),
       },
     );
   }

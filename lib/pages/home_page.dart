@@ -104,23 +104,22 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          //backgroundColor: Colors.lightBlueAccent, // Color de fondo de la barra de navegación
-          //unselectedItemColor: Colors.black,
-          //selectedItemColor: Colors.lightBlueAccent, // Color de los íconos no seleccionados
-          //fixedColor: Colors.lightBlueAccent,
-          items: [
 
+          items: [
             BottomNavigationBarItem(
               backgroundColor: bar,
-              icon: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/home');
-                  //Navigator.pushNamed(context, '/pending');
-                },
-                child: Image.asset(
-                  'assets/icons/home.png',
-                  width: 24,
-                  height: 24,
+              icon: Padding(
+                padding: const EdgeInsets.only(top: 10), // Ajusta el margen superior aquí
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/home');
+                    //Navigator.pushNamed(context, '/pending');
+                  },
+                  child: Image.asset(
+                    'assets/icons/home.png',
+                    width: 28,
+                    height: 28,
+                  ),
                 ),
               ),
               label: '',
@@ -141,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  //Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/books');
                 },
                 child: Image.asset(
                   'assets/icons/add.png',
@@ -167,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/profile');
                 },
                 child: Image.asset(
                   'assets/icons/profile.png',
@@ -180,6 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
 
         ),
+
       ),
     );
   }
