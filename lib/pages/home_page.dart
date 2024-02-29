@@ -74,8 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                // Espacio entre el buscador y la sección de libros
-                // Sección de libros con desplazamiento
+
                 Expanded(
                   child: SingleChildScrollView(
                     child: Container(
