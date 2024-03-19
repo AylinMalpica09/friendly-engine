@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:prueba_2/models/profile_model.dart';
+import 'package:prueba_2/services/profile_service.dart';
+
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({Key? key, required this.title}) : super(key: key);
 
@@ -10,6 +13,8 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
+  late Future<List<ProfileModel>> futureProfile;
+
   TextEditingController name = TextEditingController();
   TextEditingController date = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -17,6 +22,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Color miColor = Color(0xFF4D5840);
   bool isEditing = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ProfileService ps = ProfileService();
+    futureProfile = ps.fetchprofile();
+  }
 
   @override
   Widget build(BuildContext context) {
