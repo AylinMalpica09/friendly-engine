@@ -237,7 +237,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                   child: ElevatedButton(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
-                                      primary: miB,
+                                      backgroundColor: miB,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(20),
                                       ),
@@ -278,7 +278,7 @@ class _MyBookPageState extends State<MyBookPage> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                primary: miColor,
+                backgroundColor: miColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),

@@ -13,7 +13,7 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  late Future<List<ProfileModel>> futureProfile;
+  late Future<ProfileModel> futureProfile;
 
   TextEditingController name = TextEditingController();
   TextEditingController date = TextEditingController();

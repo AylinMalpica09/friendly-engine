@@ -13,7 +13,7 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  late Future<List<ProfileModel>> futureProfile;
+  late Future<ProfileModel> futureProfile;
 
   TextEditingController name = TextEditingController();
   TextEditingController date = TextEditingController();
@@ -39,7 +39,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
       ),
 
       body: Center(
-        child: FutureBuilder<List<ProfileModel>>(
+        child: FutureBuilder<ProfileModel>(
           future: futureProfile,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -54,21 +54,22 @@ class _MyProfilePageState extends State<MyProfilePage> {
       ),
     );
   }
-  Widget buildProfile(List<ProfileModel> profile) {
-    return ListView.builder(
-      itemCount: profile.length,
-
-      itemBuilder: (context, index) {
-        final product = profile[index];
-
-        return Card(
-          child: ListTile(
-            title: Text(product.name),
-            subtitle: Text(product.username),
-            trailing: Text(product.email),
+  Widget buildProfile(ProfileModel profile) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Name: ${profile.name}',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-        );
-      },
+          Text('Username: ${profile.username}'),
+          Text('Email: ${profile.email}'),
+          Text('Birthday: ${profile.birthday}'),
+          Text('Create Date: ${profile.createDate}'),
+        ],
+      ),
     );
   }
 }

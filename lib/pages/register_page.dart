@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyRegisterPage> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                primary: miColor,
+                backgroundColor: miColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -182,7 +182,7 @@ class _MyHomePageState extends State<MyRegisterPage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: miB,
+                backgroundColor: miB,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
