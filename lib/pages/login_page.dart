@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/home_page.dart';
-import 'package:prueba_2/initial_page.dart';
+import 'package:Kiboowi/pages/home_page.dart';
+import 'package:Kiboowi/pages/initial_page.dart';
 
 
 class MyLogInPage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyLogInPage> {
 
   Color miColor = Color(0xFF4D5840);
   Color miB = Color(0xFFDDA15E);
-
+  Color colorFondo = Color(0xFFEFEFED);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyLogInPage> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                primary: miColor,
+                backgroundColor: miColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -78,6 +78,7 @@ class _MyHomePageState extends State<MyLogInPage> {
                     '¡Bienvenido!',
                     textAlign: TextAlign.center,
                     style: TextStyle(
+                      fontFamily: 'Manrope',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
@@ -88,13 +89,17 @@ class _MyHomePageState extends State<MyLogInPage> {
                     controller: email,
                     decoration: InputDecoration(
                       labelText: 'Correo electrónico',
-                      prefixIcon: Icon(Icons.email, color: Colors.white),
-                      fillColor: miColor,
+                      prefixIcon: Icon(Icons.email, color: miColor),
+                      fillColor: colorFondo,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      labelStyle: TextStyle(color: Colors.white),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: miColor), // Color del borde cuando el TextField no está enfocado
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
                     ),
                     style: TextStyle(color: Colors.white, fontSize: 8),
                   ),
@@ -103,13 +108,13 @@ class _MyHomePageState extends State<MyLogInPage> {
                     controller: password,
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
-                      prefixIcon: Icon(Icons.password, color: Colors.white),
-                      fillColor: miColor,
+                      prefixIcon: Icon(Icons.password, color: miColor),
+                      fillColor: colorFondo,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
                     ),
                     style: TextStyle(color: Colors.white, fontSize: 8),
                   ),
@@ -123,7 +128,7 @@ class _MyHomePageState extends State<MyLogInPage> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: miB,
+                      backgroundColor: miB,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -132,8 +137,10 @@ class _MyHomePageState extends State<MyLogInPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Registrarse',
+                          'Iniciar sesión',
                           style: TextStyle(
+                            fontFamily: 'Manrope',
+                            fontWeight: FontWeight.w600,
                             color: Colors.white,
                             fontSize: 20,
                           ),

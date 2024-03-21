@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/initial_page.dart'; //widgets
+import 'package:Kiboowi/pages/newBook.dart';
+import 'package:Kiboowi/pages/home_page.dart';
+import 'package:Kiboowi/pages/initial_page.dart';
+import 'package:Kiboowi/pages/library_page.dart';
+import 'package:Kiboowi/pages/pending_page.dart';
+import 'package:Kiboowi/pages/profile_page2.dart';
 
 
 void main() {
@@ -16,12 +21,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
-        //colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       //debugShowCheckedModeBanner: false,
-      home: const MyInitialPage(title: 'Flutter Demo Home Page'),
+      initialRoute: '/', // Especifica la ruta inicial de la aplicación
+      routes: {
+        '/': (context) => MyInitialPage(title: 'title'),
+        '/home': (context) => MyHomePage(title: 'title'),
+        '/pending': (context) => MyPendingPage(title: 'title'),
+        '/library': (context) => MyLibraryPage(title: 'title'),
+        '/profile': (context) => MyProfilePage(title: 'title'),
+        '/books': (context) => MyNewBook(title: 'title'),
+      },
     );
   }
 }

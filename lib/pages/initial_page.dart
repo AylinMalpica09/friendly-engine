@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/register_page.dart';
-import 'package:prueba_2/login_page.dart'; //widgets
+import 'package:Kiboowi/pages/register_page.dart';
+import 'package:Kiboowi/pages/login_page.dart'; //widgets
 
 class MyInitialPage extends StatefulWidget {//widgets
   const MyInitialPage({super.key, required this.title});
@@ -95,7 +95,9 @@ class _MyInitialPageState extends State<MyInitialPage> { //state
                       child: Text(
                           'Iniciar sesión',
                           style: TextStyle(
+                            fontFamily: 'Manrope',
                             color: Color(0xFFECF0F1),
+                            fontWeight: FontWeight.w500,
                       ),
                       ),
                     ),
@@ -108,11 +110,13 @@ class _MyInitialPageState extends State<MyInitialPage> { //state
                         );
                       },
                       style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 35), // Ajusta el tamaño del botón
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40), // Ajusta el tamaño del botón
                         side: BorderSide(color: Color(0xFF283618)),
                         backgroundColor: colorFondo,
                         textStyle: TextStyle(
-                            fontSize: 20,
+                          fontFamily: 'Manrope',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
                         ), // Ajusta el tamaño del texto del botón
                       ),
                       child: Text(

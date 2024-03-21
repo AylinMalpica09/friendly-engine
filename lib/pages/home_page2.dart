@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:Kiboowi/models/home_model.dart';
-import 'package:Kiboowi/services/home_service.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:Kiboowi/pages/initial_page.dart';
+import 'package:Kiboowi/pages/pending_page.dart'; //widgets
 
 class MyHomePage extends StatefulWidget {//widgets
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
-
-
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  late Future<List<HomeModel>> futureHome;
 
-  @override
-  void initState() {
-    super.initState();
-    HomeService ps = HomeService();
-    futureHome = ps.fetchhome();
-  }
+
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  TextEditingController nameBook = TextEditingController();
+  TextEditingController authorBook = TextEditingController();
+  TextEditingController imageUrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Color bar = Color(0xFFDDA15E);
     return MaterialApp(
+
       home: Scaffold(
         body: Stack(
           children: [
@@ -83,36 +84,28 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 SizedBox(height: 20),
 
-                FutureBuilder<List<HomeModel>>(
-                  future: futureHome,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else {
-                      // Aquí puedes construir tus widgets utilizando la lista de HomeModel en snapshot.data
-                      return Expanded(
-                        child: SingleChildScrollView(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 10),
-                                for (HomeModel product in snapshot.data!)
-                                  _buildBookRow(product),
-                              ],
-                            ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 10),
+                          _buildBookRow(
+                              'assets/img/analista.png', 'El Psicoanalista', 'John Katzenbach',
+                              'assets/img/boulevard.png', 'Boulevard', 'Flor Salvador'
                           ),
-                        ),
-                      );
-                    }
-                  },
-                ),
+                          _buildBookRow(
+                              'assets/img/ladrona.png', 'La ladrona de libros', 'Markus Zusak',
+                              'assets/img/limpio.png', 'Código limpio', 'Robert C. Martin'
+                          ),
 
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
 
@@ -191,53 +184,94 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               label: '',
             ),
-
           ],
 
         ),
 
       ),
-
-
     );
-
   }
 
-  Widget _buildBookRow(HomeModel? product) {
-    if (product == null) {
-      return Container(); // O un widget alternativo o mensaje de error
-    }
-
+  Widget _buildBookRow(String imagePath1, String title1, String author1, String imagePath2, String title2, String author2) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
+      child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Image.network(
-              product.imageUrl ?? '', // Verifica que imageUrls no sea null
-              width: 80,
-              height: 120,
-              fit: BoxFit.cover,
+          // Primer libro
+          Expanded(
+            child: Column(
+              children: [
+                // Imagen del primer libro
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Image.asset(
+                    imagePath1,
+                    width: 80,
+                    height: 120,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                // Título del primer libro
+                Text(
+                  title1,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                // Autor del primer libro
+                Text(
+                  author1,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 12,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
-          Text(
-            product.bookName ?? '', // Verifica que bookName no sea null
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Manrope',
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          Text(
-            product.authorName ?? '', // Verifica que authorName no sea null
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Manrope',
-              fontSize: 12,
-              color: Colors.black,
+          SizedBox(width: 16), // Espacio entre los libros
+          // Segundo libro
+          Expanded(
+            child: Column(
+              children: [
+                // Imagen del segundo libro
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Image.asset(
+                    imagePath2,
+                    width: 80,
+                    height: 120,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                // Título del segundo libro
+                Text(
+                  title2,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                // Autor del segundo libro
+                Text(
+                  author2,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 12,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -245,6 +279,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
 }
-

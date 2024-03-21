@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/pages/initial_page.dart';
-import 'package:prueba_2/pages/pending_page.dart'; //widgets
+import 'package:Kiboowi/pages/initial_page.dart';
+import 'package:Kiboowi/pages/pending_page.dart'; //widgets
 
-class MyHomePage extends StatefulWidget {//widgets
-  const MyHomePage({super.key, required this.title});
+class MyLibraryPage extends StatefulWidget {//widgets
+  const MyLibraryPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyLibraryPage> createState() => _MyLibraryPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyLibraryPageState extends State<MyLibraryPage> {
   //state
 
   @override
   Widget build(BuildContext context) {
     Color bar = Color(0xFFDDA15E);
     return MaterialApp(
-      routes: {
-        '/pending': (context) => MyPendingPage(title: 'title'),
-      },
-
-
       home: Scaffold(
         body: Stack(
           children: [
-            // Fondo de pantalla
             Container(
               width: double.infinity,
               height: double.infinity,
@@ -37,18 +31,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            // Contenido
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.only(left: 2),
+                  padding: EdgeInsets.only(left: 55),
                   // Margen izquierdo para el texto
                   child: Text(
-                    'Libros actuales',
+                    'Biblioteca',
                     style: TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 26,
+                      fontSize: 25,
                       color: Color(0xFFFFFFFF),
                     ),
                   ),
@@ -93,16 +87,16 @@ class _MyHomePageState extends State<MyHomePage> {
                               'assets/img/limpio.png', 'Código limpio', 'Robert C. Martin'
                           ),
                           _buildBookRow(
-                              'assets/img/ladrona.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/boulevard.png', 'Código limpio', 'Robert C. Martin'
+                              'assets/img/ladrona.png', 'Romeo y Julieta ', 'William Shakespeare',
+                              'assets/img/boulevard.png', 'Diario de Ana Frank', 'Ana Frank'
                           ),
                           _buildBookRow(
-                              'assets/img/analista.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/principe.png', 'Código limpio', 'Robert C. Martin'
+                              'assets/img/llamas.png', 'En llamas', 'Suzanne Collins',
+                              'assets/img/principe.png', 'El principito', 'Robert C. Martin'
                           ),
                           _buildBookRow(
-                              'assets/img/estrellas.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/limpio.png', 'Código limpio', 'Robert C. Martin'
+                              'assets/img/100 años.png', '100 años de soledad', 'Gabriel Gracía Marquez',
+                              'assets/img/atomicos.png', 'Hábitos atómicos', 'James Clear'
                           ),
                         ],
                       ),
@@ -115,44 +109,56 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          //backgroundColor: Colors.lightBlueAccent, // Color de fondo de la barra de navegación
-          //unselectedItemColor: Colors.black,
-          //selectedItemColor: Colors.lightBlueAccent, // Color de los íconos no seleccionados
-          //fixedColor: Colors.lightBlueAccent,
           items: [
-
             BottomNavigationBarItem(
-
               backgroundColor: bar,
-              icon: Image.asset(
-                'assets/icons/home.png',
-                width: 24,
-                height: 24,
+              icon: Padding(
+                padding: const EdgeInsets.only(top: 10), // Ajusta el margen superior aquí
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/home');
+                    //Navigator.pushNamed(context, '/pending');
+                  },
+                  child: Image.asset(
+                    'assets/icons/home.png',
+                    width: 28,
+                    height: 28,
+                  ),
+                ),
               ),
               label: '',
             ),
             BottomNavigationBarItem(
-
-              icon: Image.asset(
-                'assets/icons/pending.png',
-                width: 24,
-                height: 24,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/icons/add.png',
-                width: 24,
-                height: 24,
+              backgroundColor: bar,
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/pending');
+                },
+                child: Image.asset(
+                  'assets/icons/pending.png',
+                  width: 24,
+                  height: 24,
+                ),
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/');
-                  //Navigator.pushNamed(context, '/pending');
+                  Navigator.pushNamed(context, '/books');
+                },
+                child: Image.asset(
+                  'assets/icons/add.png',
+                  width: 24,
+                  height: 24,
+                ),
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/library');
                 },
                 child: Image.asset(
                   'assets/icons/books.png',
@@ -165,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/pending');
+                  Navigator.pushNamed(context, '/');
                 },
                 child: Image.asset(
                   'assets/icons/profile.png',
@@ -204,8 +210,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Título del primer libro
                 Text(
                   title1,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontFamily: 'Manrope',
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -213,7 +221,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Autor del primer libro
                 Text(
                   author1,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     color: Colors.black,
                   ),
@@ -239,8 +249,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Título del segundo libro
                 Text(
                   title2,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontFamily: 'Manrope',
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -248,7 +260,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Autor del segundo libro
                 Text(
                   author2,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     color: Colors.black,
                   ),
