@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/pages/initial_page.dart'; //widgets
+import 'package:Kiboowi/pages/initial_page.dart'; //widgets
 
 class MyPendingPage extends StatefulWidget {//widgets
   const MyPendingPage({super.key, required this.title});

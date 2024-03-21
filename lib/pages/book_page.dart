@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/pages/home_page.dart';
+import 'package:Kiboowi/models/home_model.dart';
+import 'package:Kiboowi/pages/home_page.dart';
 
 class MyBookPage extends StatefulWidget {
   const MyBookPage({Key? key, required this.title}) : super(key: key);
-
   final String title;
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/pages/register_page.dart';
-import 'package:prueba_2/pages/login_page.dart'; //widgets
+import 'package:Kiboowi/pages/register_page.dart';
+import 'package:Kiboowi/pages/login_page.dart'; //widgets
 
 class MyInitialPage extends StatefulWidget {//widgets
   const MyInitialPage({super.key, required this.title});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/pages/newBook.dart';
-import 'package:prueba_2/pages/home_page.dart';
-import 'package:prueba_2/pages/initial_page.dart';
-import 'package:prueba_2/pages/library_page.dart';
-import 'package:prueba_2/pages/pending_page.dart';
-import 'package:prueba_2/pages/profile_page2.dart';
+import 'package:Kiboowi/pages/newBook.dart';
+import 'package:Kiboowi/pages/home_page.dart';
+import 'package:Kiboowi/pages/initial_page.dart';
+import 'package:Kiboowi/pages/library_page.dart';
+import 'package:Kiboowi/pages/pending_page.dart';
+import 'package:Kiboowi/pages/profile_page2.dart';
 
 
 void main() {

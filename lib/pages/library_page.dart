@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/pages/initial_page.dart';
-import 'package:prueba_2/pages/pending_page.dart'; //widgets
+import 'package:Kiboowi/pages/initial_page.dart';
+import 'package:Kiboowi/pages/pending_page.dart'; //widgets
 
 class MyLibraryPage extends StatefulWidget {//widgets
   const MyLibraryPage({super.key, required this.title});

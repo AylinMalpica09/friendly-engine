@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:prueba_2/pages/BookDetailsPage.dart';
+import 'package:Kiboowi/pages/BookDetailsPage.dart';
 
 
 class MyNewBook extends StatelessWidget {

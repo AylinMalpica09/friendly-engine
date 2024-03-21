@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/pages/home_page.dart';
-import 'package:prueba_2/pages/initial_page.dart';
+import 'package:Kiboowi/pages/home_page.dart';
+import 'package:Kiboowi/pages/initial_page.dart';
 
 class MyRegisterPage extends StatefulWidget {
   const MyRegisterPage({Key? key, required this.title}) : super(key: key);

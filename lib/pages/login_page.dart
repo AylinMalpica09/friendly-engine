@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/pages/home_page.dart';
-import 'package:prueba_2/pages/initial_page.dart';
+import 'package:Kiboowi/pages/home_page.dart';
+import 'package:Kiboowi/pages/initial_page.dart';
 
 
 class MyLogInPage extends StatefulWidget {

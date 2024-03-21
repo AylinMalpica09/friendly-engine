@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import 'package:prueba_2/models/profile_model.dart';
+import 'package:Kiboowi/models/profile_model.dart';
 
 class ProfileService {
   Future<ProfileModel> fetchprofile() async {
