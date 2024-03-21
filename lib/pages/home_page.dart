@@ -1,26 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_2/initial_page.dart'; //widgets
+import 'package:Kiboowi/models/home_model.dart';
+import 'package:Kiboowi/services/home_service.dart';
+
 
 class MyHomePage extends StatefulWidget {//widgets
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
+
+
 }
 
+
 class _MyHomePageState extends State<MyHomePage> {
-  //state
+  late Future<HomeModel> futureHome; // Cambiar el tipo a Future<List<HomeModel>>
+
+  TextEditingController nameBook = TextEditingController();
+  TextEditingController authorBook = TextEditingController();
+  TextEditingController imageUrl = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    HomeService ps = HomeService();
+    futureHome = ps.fetchhome();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     Color bar = Color(0xFFDDA15E);
     return MaterialApp(
-      routes: {
-
-      },
-
 
       home: Scaffold(
         body: Stack(
@@ -38,16 +51,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             // Contenido
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.only(left: 2),
-                  // Margen izquierdo para el texto
+                  padding: EdgeInsets.only(left: 55), // Ajusta el margen izquierdo aquí
                   child: Text(
                     'Libros actuales',
                     style: TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 26,
+                      fontSize: 25,
                       color: Color(0xFFFFFFFF),
                     ),
                   ),
@@ -77,9 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                // Espacio entre el buscador y la sección de libros
-                // Sección de libros con desplazamiento
-                Expanded(
+
+                /*Expanded(
                   child: SingleChildScrollView(
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 20),
@@ -87,171 +99,161 @@ class _MyHomePageState extends State<MyHomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 10),
-                          _buildBookRow(
-                              'assets/img/estrellas.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/limpio.png', 'Código limpio', 'Robert C. Martin'
+                          /*_buildBookRow(
+                            '${home.imageUrl}', '${home.bookName}', '${home.authorName}'
                           ),
                           _buildBookRow(
-                              'assets/img/ladrona.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/boulevard.png', 'Código limpio', 'Robert C. Martin'
-                          ),
-                          _buildBookRow(
-                              'assets/img/analista.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/principe.png', 'Código limpio', 'Robert C. Martin'
-                          ),
-                          _buildBookRow(
-                              'assets/img/estrellas.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/limpio.png', 'Código limpio', 'Robert C. Martin'
-                          ),
+                              '${home.imageUrl}', '${home.bookName}', '${home.authorName}'
+                          ),    */
                         ],
                       ),
                     ),
                   ),
-                ),
+                ),            */
+
+                FutureBuilder<HomeModel>(
+                  future: futureHome,
+                  builder: (context, AsyncSnapshot<HomeModel> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (snapshot.hasData) { // Verifica si hay datos en el snapshot
+                      return _buildBookRow(snapshot.data!); // Utiliza el método _buildBookRow y asegúrate de que snapshot.data no sea nulo
+                    } else {
+                      return Center(child: Text('No hay datos disponibles')); // Maneja el caso donde no hay datos
+                    }
+                  },
+                )
+
               ],
             ),
 
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          //backgroundColor: Colors.lightBlueAccent, // Color de fondo de la barra de navegación
-          //unselectedItemColor: Colors.black,
-          //selectedItemColor: Colors.lightBlueAccent, // Color de los íconos no seleccionados
-          //fixedColor: Colors.lightBlueAccent,
+
           items: [
-
             BottomNavigationBarItem(
-
-              backgroundColor: Colors.lightBlueAccent,
-              icon: Image.asset(
-                'assets/icons/home.png',
-                width: 24,
-                height: 24,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              backgroundColor: Colors.deepPurple,
-              icon: Image.asset(
-                'assets/icons/pending.png',
-                width: 24,
-                height: 24,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/icons/add.png',
-                width: 24,
-                height: 24,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/icons/books.png',
-                width: 24,
-                height: 24,
+              backgroundColor: bar,
+              icon: Padding(
+                padding: const EdgeInsets.only(top: 10), // Ajusta el margen superior aquí
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/home');
+                    //Navigator.pushNamed(context, '/pending');
+                  },
+                  child: Image.asset(
+                    'assets/icons/home.png',
+                    width: 28,
+                    height: 28,
+                  ),
+                ),
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/pending');
                 },
                 child: Image.asset(
-                  'assets/icons/home.png',
+                  'assets/icons/pending.png',
                   width: 24,
                   height: 24,
                 ),
               ),
               label: '',
             ),
+            BottomNavigationBarItem(
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/books');
+                },
+                child: Image.asset(
+                  'assets/icons/add.png',
+                  width: 24,
+                  height: 24,
+                ),
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/library');
+                },
+                child: Image.asset(
+                  'assets/icons/books.png',
+                  width: 24,
+                  height: 24,
+                ),
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/profile');
+                },
+                child: Image.asset(
+                  'assets/icons/profile.png',
+                  width: 24,
+                  height: 24,
+                ),
+              ),
+              label: '',
+            ),
+
           ],
 
         ),
+
       ),
+
+
     );
+
   }
 
-  Widget _buildBookRow(String imagePath1, String title1, String author1, String imagePath2, String title2, String author2) {
+  Widget _buildBookRow(HomeModel product) {
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
-      child: Row(
+      child: Column(
         children: [
-          // Primer libro
-          Expanded(
-            child: Column(
-              children: [
-                // Imagen del primer libro
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Image.asset(
-                    imagePath1,
-                    width: 80,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // Título del primer libro
-                Text(
-                  title1,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                // Autor del primer libro
-                Text(
-                  author1,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Image.network(
+              product.imageUrl, // Carga la imagen del libro desde la URL
+              width: 80,
+              height: 120,
+              fit: BoxFit.cover,
             ),
           ),
-          SizedBox(width: 16), // Espacio entre los libros
-          // Segundo libro
-          Expanded(
-            child: Column(
-              children: [
-                // Imagen del segundo libro
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Image.asset(
-                    imagePath2,
-                    width: 80,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // Título del segundo libro
-                Text(
-                  title2,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                // Autor del segundo libro
-                Text(
-                  author2,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
+          Text(
+            product.bookName,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          Text(
+            product.authorName,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 12,
+              color: Colors.black,
             ),
           ),
         ],
       ),
     );
   }
-
 }
