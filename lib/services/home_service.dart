@@ -15,14 +15,13 @@ class HomeService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
       final List<dynamic> homeDataList = responseData['data']; // Cambio aquí para obtener una lista de datos
-
       // Mapeamos los datos de la lista a una lista de objetos HomeModel
       List<HomeModel> productList = homeDataList.map((homeData) {
         return HomeModel.fromJson({
           'id': homeData['id'],
           'idBook' : homeData['idBook'],
           'idUser' : homeData['idUser'] ,
-          'bookName': homeData['BookName'],
+          'bookName': homeData['bookName'],
           'authorName': homeData['authorName'],
           'imageUrl': homeData['imageUrl'],
         });

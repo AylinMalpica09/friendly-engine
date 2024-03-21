@@ -5,10 +5,10 @@ import 'package:Kiboowi/models/profile_model.dart';
 
 class ProfileService {
   Future<ProfileModel> fetchprofile() async {
-    final String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IkthcmluZSBBbGNhemFyIFNhcm1pZW50byIsInVzZXJuYW1lIjoia2FyaWFsc2EiLCJlbWFpbCI6IjIxMzM0MEBkcy51cGNoaWFwYXMuZWR1Lm14IiwiYmlydGhkYXkiOiIyMDAyLTExLTI5IiwiY3JlYXRlRGF0ZSI6IjIwMjQtMDMtMTgiLCJpYXQiOjE3MTA4OTY0MTAsImV4cCI6MTcxMDkwMDAxMH0.U8RRMFfe0YkoP2xDBe3L0oJTsGcWbw1ntqPQXE1gbdg";
+    final String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IkthcmluZSBBbGNhemFyIFNhcm1pZW50byIsInVzZXJuYW1lIjoia2FyaWFsc2EiLCJlbWFpbCI6IjIxMzM0MEBkcy51cGNoaWFwYXMuZWR1Lm14IiwiYmlydGhkYXkiOiIyMDAyLTExLTI5IiwiY3JlYXRlRGF0ZSI6IjIwMjQtMDMtMTgiLCJpYXQiOjE3MTEwMTAwODIsImV4cCI6MTcxMTAxMzY4Mn0.r96C-1E7kgS-Y8u5qY9GryVNoJfGj1wTPr38V9AjCi4";
 
     final response = await http.get(
-      Uri.parse('http://127.0.0.1:1234/user/profile'),
+      Uri.parse('http://137.184.115.48:1234/user/profile'),
       headers: {
         'Authorization': 'Bearer $token',
       },
