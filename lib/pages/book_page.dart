@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/models/home_model.dart';
 import 'package:Kiboowi/pages/home_page.dart';
+import 'package:Kiboowi/pages/newBook.dart';
+import 'package:Kiboowi/models/newbook_model.dart';
 
 class MyBookPage extends StatefulWidget {
-  const MyBookPage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  final Book book;
+
+  MyBookPage({required this.book});
 
   @override
   State<MyBookPage> createState() => _MyBookPageState();
@@ -44,51 +47,61 @@ class _MyBookPageState extends State<MyBookPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Expanded(
-                          child: Container(
-                            color: Colors.transparent,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Titulo',
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: 22,
-                                      color: Color(0xFF283618),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20), // Ajusta el espacio horizontal según sea necesario
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                 // Esquinas redondeadas con radio de 10.0
+                              ),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${widget.book.title}',
+                                      style: TextStyle(
+                                        fontFamily: 'Manrope',
+                                        fontSize: 22,
+                                        color: Color(0xFF283618),
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Autor',
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: 18,
-                                      color: Color(0xFF283618),
+                                    SizedBox(height: 10), // Agrega un espacio vertical entre los textos
+                                    Text(
+                                      '${widget.book.authors.join(', ')}',
+                                      style: TextStyle(
+                                        fontFamily: 'Manrope',
+                                        fontSize: 18,
+                                        color: Color(0xFF283618),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
+
                         Expanded(
                           child: Container(
                             margin: EdgeInsets.only(right: 25),
                             decoration: BoxDecoration(
-                              color: Colors.grey, // Color gris
+                              // Color gris
                               borderRadius: BorderRadius.circular(10.0), // Esquinas redondeadas con radio de 10.0
                             ), // Color gris
                             width: 103,
-                            height: 203,
+                            height: 250,
                             child: Center(
-                              child: Icon(
-                                Icons.image,
-                                size: 50, // Tamaño del icono
-                                color: Colors.white, // Color del icono
-                              ),
+                              child: widget.book.imageUrl.isNotEmpty
+                                  ? Image.network(
+                                widget.book.imageUrl,
+                                height: 250,
+                              )
+                                  : SizedBox(), // O cualquier otro widget vacío
                             ),
                           ),
                         ),
+
                       ],
                     ),
                   ),
@@ -96,6 +109,7 @@ class _MyBookPageState extends State<MyBookPage> {
                     child: SingleChildScrollView(
                       child: Container(
                         color: miW,
+                        height: 550,
                         padding: EdgeInsets.all(20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -262,31 +276,33 @@ class _MyBookPageState extends State<MyBookPage> {
           Positioned(
             top: 40,
             left: 20,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyHomePage(title: 'login')), // Navega a la vista LoginPage
-                );
-              },
-              child: Padding(
-                padding: EdgeInsets.all(1), // Ajusta el espacio alrededor del icono según sea necesario
+            child: SizedBox(
+              width: 60, // Ancho del botón
+              height: 40, // Alto del botón
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyHomePage(title: 'login')), // Navega a la vista LoginPage
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: miColor, // Color de fondo del botón
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 child: Icon(
                   Icons.arrow_back,
-                  size: 30,
+                  size: 20, // Tamaño del icono
                   color: Colors.white,
                 ),
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: miColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                fixedSize: Size(20, 25),
-              ),
             ),
-
           ),
+
+
+
         ],
       ),
     );
@@ -294,7 +310,7 @@ class _MyBookPageState extends State<MyBookPage> {
   void _showPopupMenu(BuildContext context) {
     showMenu(
       context: context,
-      position: RelativeRect.fromLTRB(1, 550, 0, 20),
+      position: RelativeRect.fromLTRB(1, 550, 0, 1),
       // Puedes ajustar la posición según tus necesidades
       items: <PopupMenuEntry>[
         PopupMenuItem(
