@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/pages/home_page.dart';
 import 'package:Kiboowi/pages/initial_page.dart';
-
+import 'package:Kiboowi/services/user_service.dart';
 
 class MyLogInPage extends StatefulWidget {
   const MyLogInPage({Key? key, required this.title}) : super(key: key);
@@ -9,16 +9,18 @@ class MyLogInPage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyLogInPage> createState() => _MyHomePageState();
+  State<MyLogInPage> createState() => _MyLoginPageState();
 }
 
-class _MyHomePageState extends State<MyLogInPage> {
+class _MyLoginPageState extends State<MyLogInPage> {
+  String error = "";
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
   Color miColor = Color(0xFF4D5840);
   Color miB = Color(0xFFDDA15E);
   Color colorFondo = Color(0xFFEFEFED);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,13 +122,33 @@ class _MyHomePageState extends State<MyLogInPage> {
                     style: TextStyle(color: miColor, fontSize: 15),
                   ),
                   SizedBox(height: 20),
+                  Center(
+                    child: Text(
+                      error,
+                      style: TextStyle(
+                          color: Colors.red
+                      ),
+                    ),
+                  ),
                   // Botón de registro
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')), // Navega a la vista home
-                      );
+                    onPressed: () async {
+                      try {
+                        print("Email: ${email.text}");
+                        print("Password: ${password.text}");
+
+                        UserService userService = UserService();
+                        await userService.loginUser(email.text, password.text);
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')), // Navega a la vista home
+                        );
+                      } catch(e) {
+                        setState(() {
+                          error = e.toString();
+                        });
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: miB,
