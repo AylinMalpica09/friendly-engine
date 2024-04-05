@@ -101,11 +101,12 @@ class _MyHomePageState extends State<MyLogInPage> {
                       ),
                       labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 8),
+                    style: TextStyle(color: miColor, fontSize: 15),
                   ),
                   SizedBox(height: 20),
                   TextField(
                     controller: password,
+                    obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
                       prefixIcon: Icon(Icons.password, color: miColor),
@@ -116,7 +117,7 @@ class _MyHomePageState extends State<MyLogInPage> {
                       ),
                       labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 8),
+                    style: TextStyle(color: miColor, fontSize: 15),
                   ),
                   SizedBox(height: 20),
                   // Botón de registro
@@ -124,7 +125,7 @@ class _MyHomePageState extends State<MyLogInPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyHomePage(title: 'login')), // Navega a la vista LoginPage
+                        MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')), // Navega a la vista home
                       );
                     },
                     style: ElevatedButton.styleFrom(

@@ -35,7 +35,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Fetch Data Example'),
+        title: const Text('Mi perfil'),
       ),
 
       body: Center(
