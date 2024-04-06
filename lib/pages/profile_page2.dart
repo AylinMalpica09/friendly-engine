@@ -342,10 +342,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/books');
+                  Navigator.pushNamed(context, '/');
                 },
                 child: Image.asset(
-                  'assets/icons/add.png',
+                  'assets/icons/salida.png',
                   width: 24,
                   height: 24,
                 ),
