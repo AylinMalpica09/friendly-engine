@@ -177,14 +177,10 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
             left: MediaQuery.of(context).size.width / 2 - 100,
             child: ElevatedButton(
                 onPressed: () async {
-                  print('Nombre: ${name.text}');
-                  print('Nombre de usuario: ${username.text}');
-                  print('Correo electrónico: ${email.text}');
-                  print('Contraseña: ${password.text}');
-                  print('Fecha de nacimiento: ${datebirth.text}');
+
                   // Llamar al método de registro del servicio aquí
                   try {
-                    await RegisterService().registerUser(
+                    final token = await RegisterService().registerUser(
                       name: name.text,
                       username: username.text,
                       email: email.text,
@@ -192,9 +188,13 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
                       birthday: datebirth.text,
                     );
                     // Registro exitoso, puedes navegar a la página de inicio de sesión o hacer lo que necesites aquí
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
+                    );
                   } catch (e) {
                     // Manejar el error aquí
-                    print('Error durante el registrosss: $e');
+                    print('Error durante el registro: $e');
                   }
                 },
                 style: ElevatedButton.styleFrom(
