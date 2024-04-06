@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/pages/home_page.dart';
 import 'package:Kiboowi/pages/initial_page.dart';
-import 'package:Kiboowi/services/user_service.dart';
+import 'package:Kiboowi/services/login_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyLogInPage extends StatefulWidget {
   const MyLogInPage({Key? key, required this.title}) : super(key: key);
@@ -134,16 +135,18 @@ class _MyLoginPageState extends State<MyLogInPage> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        print("Email: ${email.text}");
-                        print("Password: ${password.text}");
-
                         UserService userService = UserService();
-                        await userService.loginUser(email.text, password.text);
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')), // Navega a la vista home
-                        );
+                        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                        final String? token = sharedPreferences.getString('token');
+                        if (token != null) {
+                          await userService.loginUser(email.text, password.text);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
+                          );
+                        } else {
+                          // Manejar el caso donde no se pudo obtener el token
+                        }
                       } catch(e) {
                         setState(() {
                           error = e.toString();

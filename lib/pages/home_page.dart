@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:Kiboowi/models/home_model.dart';
 import 'package:Kiboowi/services/home_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+//213340@ds.upchiapas.edu.mx
 
 class MyHomePage extends StatefulWidget {//widgets
   const MyHomePage({super.key, required this.title});
@@ -13,15 +13,29 @@ class MyHomePage extends StatefulWidget {//widgets
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Future<List<HomeModel>> futureHome;
+  late Future<List<HomeModel>> futureHome = Future.value([]);
 
   @override
   void initState() {
     super.initState();
-    HomeService ps = HomeService();
-    futureHome = ps.fetchhome();
-  }
 
+    fetchHomeData();
+  }
+  Future<void> fetchHomeData() async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString('token');
+    print('Token recuperado de SharedPreferences: $token');
+
+    if (token != null) {
+      HomeService homeService = HomeService();
+      setState(() {
+        futureHome = homeService.fetchhome(token);
+      });
+    } else {
+      // Si no hay un token almacenado, redirigir al usuario al inicio de sesión
+      // o mostrar un mensaje de error
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Color bar = Color(0xFFDDA15E);
@@ -92,7 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else {
-                      // Aquí puedes construir tus widgets utilizando la lista de HomeModel en snapshot.data
+                      print("Libros obtenidos correctamente: ${snapshot.data}");
+                      // Construye tus widgets utilizando los datos en snapshot.data
                       return Expanded(
                         child: SingleChildScrollView(
                           child: Container(
@@ -111,7 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                   },
                 ),
-
               ],
             ),
 
