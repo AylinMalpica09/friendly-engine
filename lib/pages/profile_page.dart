@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:Kiboowi/models/profile_model.dart';
 import 'package:Kiboowi/services/profile_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({Key? key, required this.title}) : super(key: key);
@@ -11,10 +11,29 @@ class MyProfilePage extends StatefulWidget {
   @override
   State<MyProfilePage> createState() => _MyProfilePageState();
 }
-
 class _MyProfilePageState extends State<MyProfilePage> {
   late Future<ProfileModel> futureProfile;
+  late String token; // Variable para almacenar el token
 
+  @override
+  void initState() {
+    super.initState();
+    fetchProfile(); // Llama al método para obtener el perfil
+  }
+  Future<void> fetchProfile() async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    token = sharedPreferences.getString('token') ?? ''; // Obtiene el token de SharedPreferences
+    print('Token recuperado de SharedPreferences: $token');
+
+    if (token.isNotEmpty) {
+      ProfileService profileService = ProfileService();
+      setState(() {
+        futureProfile = profileService.fetchProfile(token); // Pasa el token al servicio
+      });
+    } else {
+      // Manejo de caso en el que no hay token
+    }
+  }
   TextEditingController name = TextEditingController();
   TextEditingController date = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -22,14 +41,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Color miColor = Color(0xFF4D5840);
   bool isEditing = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    ProfileService ps = ProfileService();
-    futureProfile = ps.fetchprofile();
-  }
 
   @override
   Widget build(BuildContext context) {
