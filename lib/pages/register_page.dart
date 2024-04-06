@@ -1,3 +1,4 @@
+import 'package:Kiboowi/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/pages/home_page.dart';
 import 'package:Kiboowi/pages/initial_page.dart';
@@ -190,7 +191,7 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
                     // Registro exitoso, puedes navegar a la página de inicio de sesión o hacer lo que necesites aquí
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
+                      MaterialPageRoute(builder: (context) => MyLogInPage(title: 'home')),
                     );
                   } catch (e) {
                     // Manejar el error aquí
