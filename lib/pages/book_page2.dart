@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/models/home_model.dart';
 import 'package:Kiboowi/pages/home_page.dart';
-import 'package:Kiboowi/pages/home_page.dart';
+import 'package:Kiboowi/pages/newBook.dart';
 import 'package:Kiboowi/models/newbook_model.dart';
-import 'package:http/http.dart' as http;
-import 'package:Kiboowi/services/newbook_service.dart';
-
 
 class MyBookPage extends StatefulWidget {
   final Book book;
@@ -16,26 +13,11 @@ class MyBookPage extends StatefulWidget {
   State<MyBookPage> createState() => _MyBookPageState();
 }
 
-
 class _MyBookPageState extends State<MyBookPage> {
-  TextEditingController name = TextEditingController();
-  TextEditingController author = TextEditingController();
-  TextEditingController image = TextEditingController();
-  TextEditingController start = TextEditingController();
-  TextEditingController end = TextEditingController();
-  TextEditingController note = TextEditingController();
-  TextEditingController reaction = TextEditingController();
-  TextEditingController status = TextEditingController();
-
-  void saveBookData() {
-    List<String> authors = widget.book.authors;
-    String title = widget.book.title;
-    String imageUrl = widget.book.imageUrl;
-
-    author.text = authors.join(', '); // Si prefieres mostrar los autores como una cadena separada por comas
-    name.text = title;
-    image.text = imageUrl;
-  }
+  TextEditingController inicio = TextEditingController();
+  TextEditingController fin = TextEditingController();
+  TextEditingController nota = TextEditingController();
+  TextEditingController reac = TextEditingController();
 
 
   final Map<String, String> emojiReactions = {
@@ -44,7 +26,6 @@ class _MyBookPageState extends State<MyBookPage> {
     '🔥': '+18',
     '🤢': 'Disgusto',
   };
-
 
   String selectedEmoji = ''; // Variable para almacenar el emoji seleccionado
 
@@ -82,7 +63,7 @@ class _MyBookPageState extends State<MyBookPage> {
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.transparent,
-                                // Esquinas redondeadas con radio de 10.0
+                                 // Esquinas redondeadas con radio de 10.0
                               ),
                               child: Center(
                                 child: Column(
@@ -160,7 +141,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                   children: [
                                     Expanded(
                                       child: TextField(
-                                        controller: start,
+                                        controller: inicio,
                                         maxLines: 1,
                                         decoration: InputDecoration(
                                           labelText: 'Inicio',
@@ -178,7 +159,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                     SizedBox(width: 20),
                                     Expanded(
                                       child: TextField(
-                                        controller: end,
+                                        controller: fin,
                                         maxLines: 1,
                                         decoration: InputDecoration(
                                           labelText: 'Fin',
@@ -197,7 +178,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                 ),
                                 SizedBox(height: 10),
                                 TextField(
-                                  controller: note,
+                                  controller: nota,
                                   maxLines: 1,
                                   decoration: InputDecoration(
                                     labelText: 'Nota',
@@ -212,7 +193,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                   style: TextStyle(color: Colors.black, fontSize: 15),
                                 ),
                                 TextField(
-                                  controller: reaction,
+                                  controller: reac,
                                   readOnly: true,
                                   maxLines: 1,
                                   decoration: InputDecoration(
@@ -236,42 +217,42 @@ class _MyBookPageState extends State<MyBookPage> {
                                             ),
                                           ),
                                         IconButton(
-                                          icon: Icon(Icons.emoji_emotions),
-                                          onPressed: () {
-                                            showModalBottomSheet(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Container(
-                                                  height: 230,
-                                                  child: Column(
-                                                    children: emojiReactions.entries.map((entry) {
-                                                      return ListTile(
-                                                        leading: Icon(
-                                                          _getIcon(entry.key),
-                                                          color: _getIconColor(entry.key),
-                                                        ),
-                                                        title: Text(entry.value),
-                                                        onTap: () {
-                                                          _selectReaction(entry.key);
-                                                          Navigator.pop(context);
-                                                        },
-                                                      );
-                                                    }).toList(),
+                                        icon: Icon(Icons.emoji_emotions),
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Container(
+                                            height: 230,
+                                            child: Column(
+                                              children: emojiReactions.entries.map((entry) {
+                                                return ListTile(
+                                                  leading: Icon(
+                                                    _getIcon(entry.key),
+                                                    color: _getIconColor(entry.key),
                                                   ),
-
+                                                  title: Text(entry.value),
+                                                  onTap: () {
+                                                    _selectReaction(entry.key);
+                                                    Navigator.pop(context);
+                                                  },
                                                 );
+                                              }).toList(),
+                                            ),
 
-                                              },
-                                            );
-                                          },
-                                        ),
+                                          );
 
-                                      ],
+                                        },
+                                      );
+                                    },
                                     ),
-                                  ),
-                                ),
 
-                                //SizedBox(height: 10),
+                                    ],
+                                    ),
+                                    ),
+                                   ),
+
+                                  //SizedBox(height: 10),
                                 SizedBox(height: 20),
                                 Align(
                                   alignment: Alignment.centerLeft,
@@ -320,27 +301,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                   height: 40,
                                   width: 200,
                                   child: ElevatedButton(
-                                    onPressed: () async {
-                                      try {
-                                        final token = await NewBookService().newBooks(
-                                          authorName: author.text,
-                                          bookName: name.text,
-                                          imageUrl: image.text,
-                                          initialDate: start.text,
-                                          finishDate: end.text,
-                                          notes: note.text,
-                                          reaction: reaction.text,
-                                          state: status.text,
-                                        );
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
-                                        );
-                                      } catch (e) {
-                                        // Manejar el error aquí
-                                        print('Error no se guardo: $e');
-                                      }
-                                    },
+                                    onPressed: () {},
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: miB,
                                       shape: RoundedRectangleBorder(
@@ -398,7 +359,6 @@ class _MyBookPageState extends State<MyBookPage> {
       ),
     );
   }
-
   void _showPopupMenu(BuildContext context) {
     showMenu(
       context: context,
@@ -415,7 +375,7 @@ class _MyBookPageState extends State<MyBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value: 'Leído',
+          value: 'opcion1',
         ),
         PopupMenuItem(
           child: Text(
@@ -427,7 +387,7 @@ class _MyBookPageState extends State<MyBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value: 'Leyendo',
+          value: 'opcion2',
         ),
         PopupMenuItem(
           child: Text(
@@ -439,26 +399,21 @@ class _MyBookPageState extends State<MyBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value:'Por leer'
-    ),
+          value: 'opcion3',
+        ),
       ],
     ).then((value) {
       if (value != null) {
         // Acciones según la opción seleccionada
-        print('Sección seleccionada: $value');
-        setState(() {
-          status.text = ''; // Asignar la opción seleccionada a la variable
-        });
+        print('Opción seleccionada: $value');
       }
     });
   }
 
-
-
   void _selectReaction(String emoji) {
     setState(() {
       selectedEmoji = emoji; // Actualizar el emoji seleccionado
-      reaction.text =''; // Actualizar el nombre de la reacción en el controlador
+      reac.text =''; // Actualizar el nombre de la reacción en el controlador
     });
     print("Reacción seleccionada: ${emojiReactions[selectedEmoji]}");
   }

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:Kiboowi/pages/home_page.dart';
 import 'package:Kiboowi/pages/book_page.dart';
 import 'package:Kiboowi/models/newbook_model.dart';
+import 'package:Kiboowi/pages/edit_bookpage.dart';
 
 
 class MyNewBook extends StatelessWidget {
@@ -11,20 +12,20 @@ class MyNewBook extends StatelessWidget {
 
   final String title;
 
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: title,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: BookSearchPage(),
+    return BookSearchPage(
+      title: title, // Aquí estás pasando el parámetro 'title' correctamente
     );
   }
 }
 
+
 class BookSearchPage extends StatefulWidget {
+  final String title;
+
+  const BookSearchPage({Key? key, required this.title}) : super(key: key);
+
   @override
   _BookSearchPageState createState() => _BookSearchPageState();
 }
@@ -65,7 +66,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MyBookPage(book: book),
+        builder: (context) => MyBookPage(book: book), //MiBookPage
       ),
     );
   }

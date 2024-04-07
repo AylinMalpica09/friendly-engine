@@ -1,34 +1,56 @@
 import 'dart:convert';
-import 'package:Kiboowi/pages/BookDetailsPage.dart';
 import 'package:http/http.dart' as http;
-import 'package:Kiboowi/models/newbook_model.dart';
 
 class NewBookService {
-  Future<void> _searchBooks(String query) async {
-    final String apiKey = 'AIzaSyDcHXlkT9pt57jqvq-bfEaMtZvr-aOzfPU';
-    final String baseUrl =
-        'https://www.googleapis.com/books/v1/volumes?q=$query&key=$apiKey';
+  Future<void> newBooks({
+    required String authorName,
+    required String bookName,
+    required String imageUrl,
+    required String initialDate,
+    required String finishDate,
+    required String notes,
+    required String reaction,
+    required String state,
+  }) async {
+    print('Enviando datos al servidor:');
+    print('Autors: $authorName');
+    print('Titulo: $bookName');
+    print('Imagen: $imageUrl');
+    print('Inicio: $initialDate');
+    print('Fin: $finishDate');
+    print('Nota: $notes');
+    print('Reacción: $reaction');
+    print('Status: $state');
 
-    final response = await http.get(Uri.parse(baseUrl));
+    try {
+      final response = await http.post(
+        Uri.parse('http://137.184.115.48:1234/user/newbook'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'authorName': authorName,
+          'bookName': bookName,
+          'imageUrl': imageUrl,
+          'initialDate': initialDate,
+          'finishDate': finishDate,
+          'notes': notes,
+          'reaction': reaction,
+          'state': state,
+        }),
+      );
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
+      final Map<String, dynamic> body = jsonDecode(response.body);
 
-      if (data.containsKey('items')) {
-        final List<dynamic> items = data['items'];
-
-        setState(() {
-          _books = items
-              .map((item) => Book.fromMap(item['volumeInfo']))
-              .toList();
-        });
+      if (response.statusCode == 200) {
+        print('Datos Guardados: ${body['message']}');
       } else {
-        setState(() {
-          _books.clear();
-        });
+        print('Error al guardar datos: ${body['message']}');
+        throw Exception(body['message']);
       }
-    } else {
-      print('Error al realizar la solicitud: ${response.statusCode}');
+    } catch (e) {
+      print('Error al conectar con el servidor: $e');
+      throw Exception('Error al conectar con el servidor');
     }
   }
 }

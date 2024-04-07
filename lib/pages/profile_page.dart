@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:Kiboowi/models/profile_model.dart';
 import 'package:Kiboowi/services/profile_service.dart';
+
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({Key? key, required this.title}) : super(key: key);

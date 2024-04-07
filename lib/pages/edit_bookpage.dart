@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/models/home_model.dart';
 import 'package:Kiboowi/pages/home_page.dart';
-import 'package:Kiboowi/pages/home_page.dart';
+import 'package:Kiboowi/pages/newBook.dart';
 import 'package:Kiboowi/models/newbook_model.dart';
-import 'package:http/http.dart' as http;
-import 'package:Kiboowi/services/newbook_service.dart';
 
-
-class MyBookPage extends StatefulWidget {
+class MyEditBookPage extends StatefulWidget {
   final Book book;
 
-  MyBookPage({required this.book});
+  MyEditBookPage({required this.book});
 
   @override
-  State<MyBookPage> createState() => _MyBookPageState();
+  State<MyEditBookPage> createState() => _MyBookPageState();
 }
 
+/*Solo falta conectar la api, componer con la api donde va el libro, se va a mandar
+a llamar nuestra api, no la de google*/
 
-class _MyBookPageState extends State<MyBookPage> {
+class _MyBookPageState extends State<MyEditBookPage> {
   TextEditingController name = TextEditingController();
   TextEditingController author = TextEditingController();
   TextEditingController image = TextEditingController();
@@ -27,16 +26,7 @@ class _MyBookPageState extends State<MyBookPage> {
   TextEditingController reaction = TextEditingController();
   TextEditingController status = TextEditingController();
 
-  void saveBookData() {
-    List<String> authors = widget.book.authors;
-    String title = widget.book.title;
-    String imageUrl = widget.book.imageUrl;
-
-    author.text = authors.join(', '); // Si prefieres mostrar los autores como una cadena separada por comas
-    name.text = title;
-    image.text = imageUrl;
-  }
-
+  bool isEditing = false;
 
   final Map<String, String> emojiReactions = {
     '❤️': 'Favorito',
@@ -45,9 +35,11 @@ class _MyBookPageState extends State<MyBookPage> {
     '🤢': 'Disgusto',
   };
 
+  void saveBook() {
+    // Aquí puedes implementar la lógica para guardar los cambios realizados en el libro
+  }
 
   String selectedEmoji = ''; // Variable para almacenar el emoji seleccionado
-
 
   Color miColor = Color(0xFF4D5840);
   Color miB = Color(0xFFDDA15E);
@@ -162,6 +154,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                       child: TextField(
                                         controller: start,
                                         maxLines: 1,
+                                        enabled: isEditing, // Permitir la edición según el estado de isEditing
                                         decoration: InputDecoration(
                                           labelText: 'Inicio',
                                           enabledBorder: UnderlineInputBorder(
@@ -172,7 +165,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                           ),
                                           labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
                                         ),
-                                        style: TextStyle(color: Colors.black, fontSize: 15),
+                                        style: TextStyle(color: miColor, fontSize: 15),
                                       ),
                                     ),
                                     SizedBox(width: 20),
@@ -180,6 +173,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                       child: TextField(
                                         controller: end,
                                         maxLines: 1,
+                                        enabled: isEditing, // Permitir la edición según el estado de isEditing
                                         decoration: InputDecoration(
                                           labelText: 'Fin',
                                           enabledBorder: UnderlineInputBorder(
@@ -190,7 +184,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                           ),
                                           labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
                                         ),
-                                        style: TextStyle(color: Colors.black, fontSize: 15),
+                                        style: TextStyle(color: miColor, fontSize: 15),
                                       ),
                                     ),
                                   ],
@@ -199,6 +193,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                 TextField(
                                   controller: note,
                                   maxLines: 1,
+                                  enabled: isEditing, // Permitir la edición según el estado de isEditing
                                   decoration: InputDecoration(
                                     labelText: 'Nota',
                                     enabledBorder: UnderlineInputBorder(
@@ -209,12 +204,13 @@ class _MyBookPageState extends State<MyBookPage> {
                                     ),
                                     labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
                                   ),
-                                  style: TextStyle(color: Colors.black, fontSize: 15),
+                                  style: TextStyle(color: miColor, fontSize: 15),
                                 ),
                                 TextField(
                                   controller: reaction,
                                   readOnly: true,
                                   maxLines: 1,
+                                  enabled: isEditing, // Permitir la edición según el estado de isEditing
                                   decoration: InputDecoration(
                                     labelText: 'Reacción',
                                     enabledBorder: UnderlineInputBorder(
@@ -237,7 +233,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                           ),
                                         IconButton(
                                           icon: Icon(Icons.emoji_emotions),
-                                          onPressed: () {
+                                          onPressed: isEditing ? () {
                                             showModalBottomSheet(
                                               context: context,
                                               builder: (BuildContext context) {
@@ -263,7 +259,7 @@ class _MyBookPageState extends State<MyBookPage> {
 
                                               },
                                             );
-                                          },
+                                          } : null,
                                         ),
 
                                       ],
@@ -281,16 +277,16 @@ class _MyBookPageState extends State<MyBookPage> {
                                       fontFamily: 'Manrope',
                                       fontSize: 20,
                                       fontWeight: FontWeight.w400,
-                                      color: Color(0xFF283618),
+                                      color: miColor,
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 15),
                                 InkWell(
-                                  onTap: () {
+                                  onTap: isEditing ? () {
                                     // Acción cuando se toca el botón "Seleccionar"
                                     _showPopupMenu(context); // Definir la función _showPopupMenu más adelante
-                                  },
+                                  } : null,
                                   child: IgnorePointer(
                                     child: Align(
                                       alignment: Alignment.centerLeft,
@@ -307,52 +303,90 @@ class _MyBookPageState extends State<MyBookPage> {
                                               borderRadius: BorderRadius.circular(0),
                                             ),
                                             labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
-                                            suffixIcon: Icon(Icons.arrow_drop_down),
+                                            suffixIcon: Icon(Icons.arrow_drop_down, color: miColor),
                                           ),
-                                          style: TextStyle(color: Colors.black, fontSize: 15),
+                                          style: TextStyle(color: miColor, fontSize: 15,),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 30),
-                                SizedBox(
-                                  height: 40,
-                                  width: 200,
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      try {
-                                        final token = await NewBookService().newBooks(
-                                          authorName: author.text,
-                                          bookName: name.text,
-                                          imageUrl: image.text,
-                                          initialDate: start.text,
-                                          finishDate: end.text,
-                                          notes: note.text,
-                                          reaction: reaction.text,
-                                          state: status.text,
-                                        );
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
-                                        );
-                                      } catch (e) {
-                                        // Manejar el error aquí
-                                        print('Error no se guardo: $e');
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: miB,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (isEditing)
+                                      SizedBox(
+                                        height: 40,
+                                        width: 150,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            saveBook();
+                                            setState(() {
+                                              isEditing = false;
+                                            });
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: miB,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Guardar',
+                                            style: TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Manrope'),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    child: Text(
-                                      'Guardar',
-                                      style: TextStyle(color: Colors.white, fontSize: 20,fontFamily: 'Manrope'),
-                                    ),
-                                  ),
+                                    SizedBox(width: 20),
+                                    if (isEditing)
+                                      SizedBox(
+                                        height: 40,
+                                        width: 150,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isEditing = false;
+                                            });
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: miC,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Cancelar',
+                                            style: TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Manrope'),
+                                          ),
+                                        ),
+                                      ),
+                                    SizedBox(width: 20),
+                                    if (!isEditing)
+                                      SizedBox(
+                                        height: 40,
+                                        width: 150,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isEditing = true;
+                                            });
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: miB,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Editar',
+                                            style: TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Manrope'),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
+
                               ],
                             ),
                           ],
@@ -391,9 +425,6 @@ class _MyBookPageState extends State<MyBookPage> {
               ),
             ),
           ),
-
-
-
         ],
       ),
     );
@@ -430,17 +461,17 @@ class _MyBookPageState extends State<MyBookPage> {
           value: 'Leyendo',
         ),
         PopupMenuItem(
-          child: Text(
-            'Por leer',
-            style: TextStyle(
-              fontFamily: 'Manrope',
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF283618),
+            child: Text(
+              'Por leer',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF283618),
+              ),
             ),
-          ),
-          value:'Por leer'
-    ),
+            value:'Por leer'
+        ),
       ],
     ).then((value) {
       if (value != null) {
@@ -454,11 +485,10 @@ class _MyBookPageState extends State<MyBookPage> {
   }
 
 
-
   void _selectReaction(String emoji) {
     setState(() {
       selectedEmoji = emoji; // Actualizar el emoji seleccionado
-      reaction.text =''; // Actualizar el nombre de la reacción en el controlador
+      reaction.text = ''; // Actualizar el nombre de la reacción en el controlador
     });
     print("Reacción seleccionada: ${emojiReactions[selectedEmoji]}");
   }
