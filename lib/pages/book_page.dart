@@ -32,10 +32,11 @@ class _MyBookPageState extends State<MyBookPage> {
     String title = widget.book.title;
     String imageUrl = widget.book.imageUrl;
 
-    author.text = authors.join(', '); // Si prefieres mostrar los autores como una cadena separada por comas
+    author.text = authors.join(', ');
     name.text = title;
     image.text = imageUrl;
   }
+
 
 
   final Map<String, String> emojiReactions = {
@@ -56,6 +57,7 @@ class _MyBookPageState extends State<MyBookPage> {
 
   @override
   Widget build(BuildContext context) {
+    saveBookData();
     return Scaffold(
       body: Stack(
         children: [
@@ -447,7 +449,7 @@ class _MyBookPageState extends State<MyBookPage> {
         // Acciones según la opción seleccionada
         print('Sección seleccionada: $value');
         setState(() {
-          status.text = ''; // Asignar la opción seleccionada a la variable
+          status.text = value.toString(); // Asignar la opción seleccionada a la variable
         });
       }
     });
@@ -458,7 +460,7 @@ class _MyBookPageState extends State<MyBookPage> {
   void _selectReaction(String emoji) {
     setState(() {
       selectedEmoji = emoji; // Actualizar el emoji seleccionado
-      reaction.text =''; // Actualizar el nombre de la reacción en el controlador
+      reaction.text = emojiReactions[emoji] ?? ''; // Actualizar el nombre de la reacción en el controlador
     });
     print("Reacción seleccionada: ${emojiReactions[selectedEmoji]}");
   }
