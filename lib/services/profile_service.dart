@@ -26,6 +26,9 @@ class ProfileService {
         'email': profileData['email'],
         'birthday': profileData['birthday'],
         'createDate': profileData['createDate'],
+        'por_leer': profileData['books']['por_leer'].toString(),
+        'leidos': profileData['books']['leidos'].toString(),
+        'leyendo': profileData['books']['leyendo'].toString()
       });
 
       return profile;

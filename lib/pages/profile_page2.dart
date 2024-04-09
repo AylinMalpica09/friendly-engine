@@ -244,7 +244,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                     ),
                                   ),
                                   Text(
-                                      '2', // Aquí puedes poner el número de libros leídos
+                                     profile.leidos, // Aquí puedes poner el número de libros leídos
                                     style: TextStyle(
                                       fontFamily: 'Manrope',
                                       fontSize: 16,
@@ -265,7 +265,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                     ),
                                   ),
                                   Text(
-                                    '20', // Aquí puedes poner el número de libros leídos
+                                    profile.leyendo, // Aquí puedes poner el número de libros leídos
                                     style: TextStyle(
                                       fontFamily: 'Manrope',
                                       fontSize: 16,
@@ -286,7 +286,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                     ),
                                   ),
                                   Text(
-                                    '20', // Aquí puedes poner el número de libros leídos
+                                    profile.por_leer, // Aquí puedes poner el número de libros leídos
                                     style: TextStyle(
                                       fontFamily: 'Manrope',
                                       fontSize: 16,
