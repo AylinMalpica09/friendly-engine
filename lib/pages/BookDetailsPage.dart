@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/pages/newBook.dart';
+import 'package:Kiboowi/models/newbook_model.dart';
 
 class BookDetailsPage extends StatelessWidget {
   final Book book;
