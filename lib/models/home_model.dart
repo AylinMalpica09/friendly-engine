@@ -1,6 +1,6 @@
 class HomeModel {
   final int id;
-  final int idBook;
+  final String idBook;
   final int idUser;
   final String bookName;
   final String authorName;
@@ -18,7 +18,7 @@ class HomeModel {
   factory HomeModel.fromJson(Map<String, dynamic> json) {
     return HomeModel(
       id: json['id'] as int,
-      idBook: json['idBook'] as int,
+      idBook: json['idBook'] as String,
       idUser: json['idUser'] as int,
       bookName: json['bookName'] as String, // Corregido el nombre del campo
       authorName: json['authorName'] as String,

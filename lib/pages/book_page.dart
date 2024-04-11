@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:Kiboowi/services/newbook_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class MyBookPage extends StatefulWidget {
   final Book book;
 
@@ -17,7 +16,6 @@ class MyBookPage extends StatefulWidget {
   State<MyBookPage> createState() => _MyBookPageState();
 }
 
-
 class _MyBookPageState extends State<MyBookPage> {
   TextEditingController name = TextEditingController();
   TextEditingController author = TextEditingController();
@@ -26,7 +24,7 @@ class _MyBookPageState extends State<MyBookPage> {
   TextEditingController end = TextEditingController();
   TextEditingController note = TextEditingController();
   TextEditingController reaction = TextEditingController();
-  TextEditingController status = TextEditingController();
+  int status = 0; // Estado del libro
 
   void saveBookData() {
     List<String> authors = widget.book.authors;
@@ -38,8 +36,6 @@ class _MyBookPageState extends State<MyBookPage> {
     image.text = imageUrl;
   }
 
-
-
   final Map<String, String> emojiReactions = {
     '❤️': 'Favorito',
     '💧': 'Triste',
@@ -47,9 +43,7 @@ class _MyBookPageState extends State<MyBookPage> {
     '🤢': 'Disgusto',
   };
 
-
   String selectedEmoji = ''; // Variable para almacenar el emoji seleccionado
-
 
   Color miColor = Color(0xFF4D5840);
   Color miB = Color(0xFFDDA15E);
@@ -60,7 +54,6 @@ class _MyBookPageState extends State<MyBookPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +113,6 @@ class _MyBookPageState extends State<MyBookPage> {
                             ),
                           ),
                         ),
-
                         Expanded(
                           child: Container(
                             margin: EdgeInsets.only(right: 25),
@@ -140,7 +132,6 @@ class _MyBookPageState extends State<MyBookPage> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -342,7 +333,8 @@ class _MyBookPageState extends State<MyBookPage> {
                                             finishDate: end.text,
                                             notes: note.text,
                                             reaction: reaction.text,
-                                            state: status.text, token: '',
+                                            state: status, // Actualizar para pasar el estado como un valor entero
+                                            token: '',
                                           );
 
                                           Navigator.pushReplacement(
@@ -408,9 +400,6 @@ class _MyBookPageState extends State<MyBookPage> {
               ),
             ),
           ),
-
-
-
         ],
       ),
     );
@@ -432,7 +421,7 @@ class _MyBookPageState extends State<MyBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value: 'Leído',
+          value: 2,
         ),
         PopupMenuItem(
           child: Text(
@@ -444,7 +433,7 @@ class _MyBookPageState extends State<MyBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value: 'Leyendo',
+          value: 3,
         ),
         PopupMenuItem(
           child: Text(
@@ -456,21 +445,19 @@ class _MyBookPageState extends State<MyBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value:'Por leer'
-    ),
+          value: 1,
+        ),
       ],
     ).then((value) {
       if (value != null) {
         // Acciones según la opción seleccionada
         print('Sección seleccionada: $value');
         setState(() {
-          status.text = value.toString(); // Asignar la opción seleccionada a la variable
+          status = value; // Asignar la opción seleccionada al estado del libro
         });
       }
     });
   }
-
-
 
   void _selectReaction(String emoji) {
     setState(() {

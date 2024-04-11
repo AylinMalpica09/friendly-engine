@@ -11,7 +11,7 @@ class NewBookService {
     required String finishDate,
     required String notes,
     required String reaction,
-    required String state,
+    required int state,
   }) async {
     print('Enviando datos al servidor:');
     print('Autor: $authorName');
@@ -25,12 +25,12 @@ class NewBookService {
 
     try {
       final response = await http.post(
-        Uri.parse('http://137.184.115.48:1234/useruser-book/add-book'),
+        Uri.parse('http://137.184.115.48:1234/user-book/add-book'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token', // Usar el token pasado como parámetro
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'authorName': authorName,
           'bookName': bookName,
           'imageUrl': imageUrl,
