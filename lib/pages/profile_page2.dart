@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/models/profile_model.dart';
 import 'package:Kiboowi/services/profile_service.dart';
+import 'package:Kiboowi/services/update_profile.dart'; // Importa el servicio de actualización
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -69,7 +70,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
               name.text = profile.name;
               date.text = profile.birthday;
               email.text = profile.email;
-
 
               return Stack(
                 children: [
@@ -195,6 +195,25 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                           setState(() {
                                             isEditing = !isEditing;
                                           });
+                                          // Verifica si el usuario está en modo de edición
+                                          if (!isEditing) {
+                                            // Llama al servicio para actualizar el perfil
+                                            UpdateProfileService().updateProfile(
+                                              token: token,
+                                              name: name.text,
+                                              birthday: date.text,
+                                              email: email.text,
+                                              password: password.text,
+                                            ).then((_) {
+                                              // Actualiza la vista al completar la actualización
+                                              fetchProfile();
+                                            }).catchError((error) {
+                                              // Maneja errores en caso de falla en la actualización
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(content: Text('Error: $error')),
+                                              );
+                                            });
+                                          }
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: bar,
@@ -218,6 +237,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                           ],
                                         ),
                                       ),
+
                                     ],
                                   ),
                                 ),
@@ -244,7 +264,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                     ),
                                   ),
                                   Text(
-                                     profile.leidos, // Aquí puedes poner el número de libros leídos
+                                    profile.leidos, // Aquí puedes poner el número de libros leídos
                                     style: TextStyle(
                                       fontFamily: 'Manrope',
                                       fontSize: 16,
