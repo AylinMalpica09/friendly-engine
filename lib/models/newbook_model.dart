@@ -1,15 +1,17 @@
 class Book {
+  final String id;
   final String title;
   final List<String> authors;
   final String imageUrl;
 
   Book({
+    required this.id,
     required this.title,
     required this.authors,
     required this.imageUrl,
   });
 
-  factory Book.fromMap(Map<String, dynamic> map) {
+  factory Book.fromMap(String id, Map<String, dynamic> map) {
     final List<String> authors = map['authors'] != null
         ? List<String>.from(map['authors'])
         : ['Desconocido'];
@@ -23,6 +25,7 @@ class Book {
     }
 
     return Book(
+      id: id,
       title: map['title'] ?? 'Desconocido',
       authors: authors,
       imageUrl: imageUrl,

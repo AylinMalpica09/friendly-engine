@@ -142,7 +142,7 @@ class _MyLoginPageState extends State<MyLogInPage> {
                           await userService.loginUser(email.text, password.text);
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
+                            MaterialPageRoute(builder: (context) => MyHomePage(title: 'title')),
                           );
                         } else {
                           // Manejar el caso donde no se pudo obtener el token

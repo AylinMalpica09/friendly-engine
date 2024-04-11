@@ -35,7 +35,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
   List<Book> _books = [];
 
   Future<void> _searchBooks(String query) async {
-    final String apiKey = 'AIzaSyDcHXlkT9pt57jqvq-bfEaMtZvr-aOzfPU';
+    final String apiKey = 'tu_api_key';
     final String baseUrl =
         'https://www.googleapis.com/books/v1/volumes?q=$query&key=$apiKey';
 
@@ -49,7 +49,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
 
         setState(() {
           _books = items
-              .map((item) => Book.fromMap(item['volumeInfo']))
+              .map((item) => Book.fromMap(item['id'], item['volumeInfo'])) // Aquí se pasa el ID
               .toList();
         });
       } else {
@@ -61,6 +61,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
       print('Error al realizar la solicitud: ${response.statusCode}');
     }
   }
+
 
   void _viewBookDetails(Book book) {
     Navigator.push(

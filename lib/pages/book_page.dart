@@ -5,7 +5,7 @@ import 'package:Kiboowi/pages/home_page.dart';
 import 'package:Kiboowi/models/newbook_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:Kiboowi/services/newbook_service.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyBookPage extends StatefulWidget {
   final Book book;
@@ -16,8 +16,8 @@ class MyBookPage extends StatefulWidget {
   State<MyBookPage> createState() => _MyBookPageState();
 }
 
-
 class _MyBookPageState extends State<MyBookPage> {
+  TextEditingController id = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController author = TextEditingController();
   TextEditingController image = TextEditingController();
@@ -25,19 +25,19 @@ class _MyBookPageState extends State<MyBookPage> {
   TextEditingController end = TextEditingController();
   TextEditingController note = TextEditingController();
   TextEditingController reaction = TextEditingController();
-  TextEditingController status = TextEditingController();
+  int status = 0; // Estado del libro
 
   void saveBookData() {
+    String id = widget.book.id;
     List<String> authors = widget.book.authors;
     String title = widget.book.title;
     String imageUrl = widget.book.imageUrl;
 
+    id = id;
     author.text = authors.join(', ');
     name.text = title;
     image.text = imageUrl;
   }
-
-
 
   final Map<String, String> emojiReactions = {
     '❤️': 'Favorito',
@@ -46,14 +46,17 @@ class _MyBookPageState extends State<MyBookPage> {
     '🤢': 'Disgusto',
   };
 
-
   String selectedEmoji = ''; // Variable para almacenar el emoji seleccionado
-
 
   Color miColor = Color(0xFF4D5840);
   Color miB = Color(0xFFDDA15E);
   Color miC = Color(0xFF63843D);
   Color miW = Color(0xFFFAF5ED);
+
+  Future<String?> obtenerToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +116,6 @@ class _MyBookPageState extends State<MyBookPage> {
                             ),
                           ),
                         ),
-
                         Expanded(
                           child: Container(
                             margin: EdgeInsets.only(right: 25),
@@ -133,7 +135,6 @@ class _MyBookPageState extends State<MyBookPage> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -324,25 +325,35 @@ class _MyBookPageState extends State<MyBookPage> {
                                   child: ElevatedButton(
                                     onPressed: () async {
                                       try {
-                                        final token = await NewBookService().newBooks(
-                                          authorName: author.text,
-                                          bookName: name.text,
-                                          imageUrl: image.text,
-                                          initialDate: start.text,
-                                          finishDate: end.text,
-                                          notes: note.text,
-                                          reaction: reaction.text,
-                                          state: status.text,
-                                        );
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
-                                        );
+                                        final token = await obtenerToken();
+
+                                        if (token != null) {
+                                          await NewBookService().newBooks(
+                                            id: id.text,
+                                            authorName: author.text,
+                                            bookName: name.text,
+                                            imageUrl: image.text,
+                                            initialDate: start.text,
+                                            finishDate: end.text,
+                                            notes: note.text,
+                                            reaction: reaction.text,
+                                            state: status, // Actualizar para pasar el estado como un valor entero
+                                            token: '',
+                                          );
+
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
+                                          );
+                                        } else {
+                                          // Manejar el caso en el que no se pueda obtener el token
+                                          print('No se pudo obtener el token');
+                                        }
                                       } catch (e) {
-                                        // Manejar el error aquí
                                         print('Error no se guardo: $e');
                                       }
                                     },
+
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: miB,
                                       shape: RoundedRectangleBorder(
@@ -393,9 +404,6 @@ class _MyBookPageState extends State<MyBookPage> {
               ),
             ),
           ),
-
-
-
         ],
       ),
     );
@@ -417,7 +425,7 @@ class _MyBookPageState extends State<MyBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value: 'Leído',
+          value: 2,
         ),
         PopupMenuItem(
           child: Text(
@@ -429,7 +437,7 @@ class _MyBookPageState extends State<MyBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value: 'Leyendo',
+          value: 3,
         ),
         PopupMenuItem(
           child: Text(
@@ -441,21 +449,19 @@ class _MyBookPageState extends State<MyBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value:'Por leer'
-    ),
+          value: 1,
+        ),
       ],
     ).then((value) {
       if (value != null) {
         // Acciones según la opción seleccionada
         print('Sección seleccionada: $value');
         setState(() {
-          status.text = value.toString(); // Asignar la opción seleccionada a la variable
+          status = value; // Asignar la opción seleccionada al estado del libro
         });
       }
     });
   }
-
-
 
   void _selectReaction(String emoji) {
     setState(() {

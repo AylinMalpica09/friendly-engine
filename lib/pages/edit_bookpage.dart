@@ -446,7 +446,7 @@ class _MyBookPageState extends State<MyEditBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value: 'Leído',
+          value: 2,
         ),
         PopupMenuItem(
           child: Text(
@@ -458,7 +458,7 @@ class _MyBookPageState extends State<MyEditBookPage> {
               color: Color(0xFF283618),
             ),
           ),
-          value: 'Leyendo',
+          value: 3,
         ),
         PopupMenuItem(
             child: Text(
@@ -470,7 +470,7 @@ class _MyBookPageState extends State<MyEditBookPage> {
                 color: Color(0xFF283618),
               ),
             ),
-            value:'Por leer'
+            value:1
         ),
       ],
     ).then((value) {
