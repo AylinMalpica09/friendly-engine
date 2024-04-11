@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/pages/home_page.dart';
 import 'package:Kiboowi/pages/initial_page.dart';
-
+import 'package:Kiboowi/services/login_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyLogInPage extends StatefulWidget {
   const MyLogInPage({Key? key, required this.title}) : super(key: key);
@@ -9,16 +10,18 @@ class MyLogInPage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyLogInPage> createState() => _MyHomePageState();
+  State<MyLogInPage> createState() => _MyLoginPageState();
 }
 
-class _MyHomePageState extends State<MyLogInPage> {
+class _MyLoginPageState extends State<MyLogInPage> {
+  String error = "";
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
   Color miColor = Color(0xFF4D5840);
   Color miB = Color(0xFFDDA15E);
   Color colorFondo = Color(0xFFEFEFED);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,11 +104,12 @@ class _MyHomePageState extends State<MyLogInPage> {
                       ),
                       labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 8),
+                    style: TextStyle(color: miColor, fontSize: 15),
                   ),
                   SizedBox(height: 20),
                   TextField(
                     controller: password,
+                    obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
                       prefixIcon: Icon(Icons.password, color: miColor),
@@ -116,16 +120,38 @@ class _MyHomePageState extends State<MyLogInPage> {
                       ),
                       labelStyle: TextStyle(color: miColor, fontFamily: 'Manrope',),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 8),
+                    style: TextStyle(color: miColor, fontSize: 15),
                   ),
                   SizedBox(height: 20),
+                  Center(
+                    child: Text(
+                      error,
+                      style: TextStyle(
+                          color: Colors.red
+                      ),
+                    ),
+                  ),
                   // Botón de registro
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyHomePage(title: 'login')), // Navega a la vista LoginPage
-                      );
+                    onPressed: () async {
+                      try {
+                        UserService userService = UserService();
+                        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                        final String? token = sharedPreferences.getString('token');
+                        if (token != null) {
+                          await userService.loginUser(email.text, password.text);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
+                          );
+                        } else {
+                          // Manejar el caso donde no se pudo obtener el token
+                        }
+                      } catch(e) {
+                        setState(() {
+                          error = e.toString();
+                        });
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: miB,

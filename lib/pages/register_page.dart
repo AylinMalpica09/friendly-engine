@@ -1,6 +1,8 @@
+import 'package:Kiboowi/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/pages/home_page.dart';
 import 'package:Kiboowi/pages/initial_page.dart';
+import 'package:Kiboowi/services/register_service.dart'; // Asegúrate de importar el servicio
 
 class MyRegisterPage extends StatefulWidget {
   const MyRegisterPage({Key? key, required this.title}) : super(key: key);
@@ -8,10 +10,10 @@ class MyRegisterPage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyRegisterPage> createState() => _MyHomePageState();
+  State<MyRegisterPage> createState() => _MyRegisterPageState();
 }
 
-class _MyHomePageState extends State<MyRegisterPage> {
+class _MyRegisterPageState extends State<MyRegisterPage> {
   TextEditingController name = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -100,7 +102,7 @@ class _MyHomePageState extends State<MyRegisterPage> {
                       labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
+                    style: TextStyle(color: miColor, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                   SizedBox(height: 20),
                   TextField(
@@ -116,7 +118,7 @@ class _MyHomePageState extends State<MyRegisterPage> {
                       labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
+                    style: TextStyle(color: miColor, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                   SizedBox(height: 20),
                   TextField(
@@ -132,7 +134,7 @@ class _MyHomePageState extends State<MyRegisterPage> {
                       labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
+                    style: TextStyle(color: miColor, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                   SizedBox(height: 20),
                   TextField(
@@ -148,7 +150,7 @@ class _MyHomePageState extends State<MyRegisterPage> {
                       labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
+                    style: TextStyle(color: miColor, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                   SizedBox(height: 20),
                   TextField(
@@ -164,7 +166,7 @@ class _MyHomePageState extends State<MyRegisterPage> {
                       labelStyle: TextStyle(color: miColor, fontSize: 15),
                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     ),
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Manrope',),
+                    style: TextStyle(color: miColor, fontSize: 15, fontFamily: 'Manrope',),
                   ),
                 ],
               ),
@@ -175,18 +177,33 @@ class _MyHomePageState extends State<MyRegisterPage> {
             bottom: 80,
             left: MediaQuery.of(context).size.width / 2 - 100,
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyHomePage(title: 'login')), // Navega a la vista LoginPage
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: miB,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                onPressed: () async {
+
+                  // Llamar al método de registro del servicio aquí
+                  try {
+                    final token = await RegisterService().registerUser(
+                      name: name.text,
+                      username: username.text,
+                      email: email.text,
+                      password: password.text,
+                      birthday: datebirth.text,
+                    );
+                    // Registro exitoso, puedes navegar a la página de inicio de sesión o hacer lo que necesites aquí
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyLogInPage(title: 'home')),
+                    );
+                  } catch (e) {
+                    // Manejar el error aquí
+                    print('Error durante el registro: $e');
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: miB,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
-              ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

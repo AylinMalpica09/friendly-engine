@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 class NewBookService {
   Future<void> newBooks({
+    required String token, // Agregar token como parámetro
     required String authorName,
     required String bookName,
     required String imageUrl,
@@ -13,20 +14,21 @@ class NewBookService {
     required String state,
   }) async {
     print('Enviando datos al servidor:');
-    print('Autors: $authorName');
-    print('Titulo: $bookName');
+    print('Autor: $authorName');
+    print('Título: $bookName');
     print('Imagen: $imageUrl');
     print('Inicio: $initialDate');
     print('Fin: $finishDate');
     print('Nota: $notes');
     print('Reacción: $reaction');
-    print('Status: $state');
+    print('Estado: $state');
 
     try {
       final response = await http.post(
-        Uri.parse('http://137.184.115.48:1234/user/newbook'),
+        Uri.parse('http://137.184.115.48:1234/useruser-book/add-book'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token', // Usar el token pasado como parámetro
         },
         body: jsonEncode(<String, String>{
           'authorName': authorName,
