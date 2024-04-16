@@ -134,12 +134,15 @@ class _MyLoginPageState extends State<MyLogInPage> {
                   // Botón de registro
                   ElevatedButton(
                     onPressed: () async {
+                      print("estoy saliendo del login");
+
                       try {
                         UserService userService = UserService();
+                        await userService.loginUser(email.text, password.text);
                         final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                         final String? token = sharedPreferences.getString('token');
+                        print('Token almacenado en SharedPreferences: $token');
                         if (token != null) {
-                          await userService.loginUser(email.text, password.text);
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => MyHomePage(title: 'home')),
