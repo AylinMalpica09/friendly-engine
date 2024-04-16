@@ -4,9 +4,6 @@ import 'package:http/http.dart' as http;
 class UpdateProfileService {
   Future<void> updateProfile({
     required String token,
-    required String name,
-    required String birthday,
-    required String email,
     required String password,
   }) async {
     if (token.isEmpty) {
@@ -21,9 +18,7 @@ class UpdateProfileService {
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode({
-          'name': name,
-          'birthday': birthday,
-          'email': email,
+
           'password': password,
         }),
       );

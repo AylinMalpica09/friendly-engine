@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:Kiboowi/models/home_model.dart';
-import 'package:Kiboowi/pages/home_page.dart';
 import 'package:Kiboowi/pages/home_page.dart';
 import 'package:Kiboowi/models/newbook_model.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +16,7 @@ class MyBookPage extends StatefulWidget {
 
 
 class _MyBookPageState extends State<MyBookPage> {
+  TextEditingController id = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController author = TextEditingController();
   TextEditingController image = TextEditingController();
@@ -28,6 +27,7 @@ class _MyBookPageState extends State<MyBookPage> {
   TextEditingController status = TextEditingController();
 
   void saveBookData() {
+    String id = widget.book.id;
     List<String> authors = widget.book.authors;
     String title = widget.book.title;
     String imageUrl = widget.book.imageUrl;
@@ -325,6 +325,7 @@ class _MyBookPageState extends State<MyBookPage> {
                                     onPressed: () async {
                                       try {
                                         final token = await NewBookService().newBooks(
+                                          id: id.text,
                                           authorName: author.text,
                                           bookName: name.text,
                                           imageUrl: image.text,

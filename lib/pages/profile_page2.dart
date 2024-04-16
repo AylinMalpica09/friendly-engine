@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/models/profile_model.dart';
 import 'package:Kiboowi/services/profile_service.dart';
-import 'package:Kiboowi/services/update_profile.dart'; // Importa el servicio de actualización
+import 'package:Kiboowi/services/update_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:Kiboowi/pages/editProfile_page.dart';
+import 'package:Kiboowi/services/delete_service.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({Key? key, required this.title}) : super(key: key);
@@ -14,7 +18,7 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  late Future<ProfileModel> futureProfile;
+  late Future<ProfileModel>? futureProfile;
   late String token; // Variable para almacenar el token
 
   @override
@@ -124,7 +128,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         Center(
                           child: Column(
                             children: [
-                              SizedBox(height: 20), // Espacio entre el texto y el contenedor
+                              SizedBox(height: 16), // Espacio entre el texto y el contenedor
                               Container(
                                 margin: EdgeInsets.symmetric(
                                     horizontal: 10), // Ajusta los márgenes horizontalmente
@@ -192,28 +196,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
-                                          setState(() {
-                                            isEditing = !isEditing;
-                                          });
-                                          // Verifica si el usuario está en modo de edición
-                                          if (!isEditing) {
-                                            // Llama al servicio para actualizar el perfil
-                                            UpdateProfileService().updateProfile(
-                                              token: token,
-                                              name: name.text,
-                                              birthday: date.text,
-                                              email: email.text,
-                                              password: password.text,
-                                            ).then((_) {
-                                              // Actualiza la vista al completar la actualización
-                                              fetchProfile();
-                                            }).catchError((error) {
-                                              // Maneja errores en caso de falla en la actualización
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(content: Text('Error: $error')),
-                                              );
-                                            });
-                                          }
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MyEditProfilePage(token: token), // Pasa el token aquí
+                                            ),
+                                          );
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: bar,
@@ -225,7 +213,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              isEditing ? 'Guardar cambios' : 'Editar perfil',
+                                              'Editar perfil',
                                               style: TextStyle(
                                                 fontFamily: 'Manrope',
                                                 fontWeight: FontWeight.w600,
@@ -252,69 +240,180 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Text(
-                                    'Libros leídos:',
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: 16,
+                              Container(
+                                width: 400,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        child: Text(
+                                          'Libros leídos:',
+                                          textAlign: TextAlign.center, // Alinea el texto al centro
+                                          style: TextStyle(
+                                            fontFamily: 'Manrope',
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    profile.leidos, // Aquí puedes poner el número de libros leídos
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                    SizedBox(width: 10), // Espacio de 10 píxeles entre los dos Containers
+                                    Expanded(
+                                      child: Container(
+                                        child: Text(
+                                          profile.leidos,
+                                          textAlign: TextAlign.center, // Alinea el texto al centro
+                                          style: TextStyle(
+                                            fontFamily: 'Manrope',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Text(
-                                    'Libros leyendo:',
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: 16,
+                              Container(
+                                width: 400,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        child: Text(
+                                          'Libros leyendo:',
+                                          textAlign: TextAlign.center, // Alinea el texto al centro
+                                          style: TextStyle(
+                                            fontFamily: 'Manrope',
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    profile.leyendo, // Aquí puedes poner el número de libros leídos
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                    SizedBox(width: 10), // Espacio de 10 píxeles entre los dos Containers
+                                    Expanded(
+                                      child: Container(
+                                        child: Text(
+                                          profile.leyendo,
+                                          textAlign: TextAlign.center, // Alinea el texto al centro
+                                          style: TextStyle(
+                                            fontFamily: 'Manrope',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Text(
-                                    'Libros por leer:',
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: 16,
+                              Container(
+                                width: 400,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        child: Text(
+                                          'Libros por leer:',
+                                          textAlign: TextAlign.center, // Alinea el texto al centro
+                                          style: TextStyle(
+                                            fontFamily: 'Manrope',
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    profile.por_leer, // Aquí puedes poner el número de libros leídos
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                    SizedBox(width: 10), // Espacio de 10 píxeles entre los dos Containers
+                                    Expanded(
+                                      child: Container(
+                                        child: Text(
+                                          profile.por_leer,
+                                          textAlign: TextAlign.center, // Alinea el texto al centro
+                                          style: TextStyle(
+                                            fontFamily: 'Manrope',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
+
+                              SizedBox(height: 10),
+
+                              ElevatedButton(
+                                onPressed: () async {
+                                  // Mostrar un diálogo de confirmación antes de eliminar la cuenta
+                                  bool confirmDelete = await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('¿Estás seguro de que deseas eliminar tu cuenta?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false); // Cierra el diálogo y devuelve false
+                                            },
+                                            child: Text('Cancelar'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(true); // Cierra el diálogo y devuelve true
+                                            },
+                                            child: Text('Eliminar'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+
+                                  // Si el usuario confirmó la eliminación de la cuenta, procede con la operación
+                                  if (confirmDelete == true) {
+                                    // Crear una instancia de AccountService
+                                    AccountService accountService = AccountService();
+
+                                    // Realizar la eliminación de la cuenta
+                                    bool deleteSuccess = await accountService.deleteAccount(token);
+
+                                    // Aquí puedes manejar el resultado de la eliminación, por ejemplo:
+                                    if (deleteSuccess) {
+                                      // Si la cuenta se eliminó con éxito, puedes realizar alguna acción, como navegar a la pantalla de inicio
+                                      Navigator.of(context).pushNamed('/home');
+                                    } else {
+                                      // Si hubo un error al eliminar la cuenta, puedes mostrar un mensaje de error
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Error al eliminar la cuenta. Inténtalo de nuevo más tarde.'),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: miColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Eliminar cuenta',
+                                  style: TextStyle(
+                                    fontFamily: 'Manrope',
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+
+
+
                             ],
                           ),
                         ),

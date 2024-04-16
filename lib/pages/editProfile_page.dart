@@ -1,49 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:Kiboowi/services/update_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class MyProfilePage extends StatefulWidget {
-  const MyProfilePage({Key? key}) : super(key: key);
+
+class MyEditProfilePage extends StatefulWidget {
+  final String token;
+
+  const MyEditProfilePage({Key? key, required this.token}) : super(key: key);
+
 
   @override
-  _MyProfilePageState createState() => _MyProfilePageState();
+  _MyEditProfilePageState createState() => _MyEditProfilePageState();
 }
 
-class _MyProfilePageState extends State<MyProfilePage> {
-  late TextEditingController nameController;
-  late TextEditingController birthdayController;
-  late TextEditingController emailController;
+class _MyEditProfilePageState extends State<MyEditProfilePage> {
+
+
   late TextEditingController passwordController;
+  late String token;
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController();
-    birthdayController = TextEditingController();
-    emailController = TextEditingController();
+
     passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    nameController.dispose();
-    birthdayController.dispose();
-    emailController.dispose();
+
     passwordController.dispose();
     super.dispose();
   }
 
   void _updateProfile() {
-    final String token = 'your_token_here'; // Obtén el token de donde lo almacenes
-    final String name = nameController.text;
-    final String birthday = birthdayController.text;
-    final String email = emailController.text;
+    final String token = widget.token;
     final String password = passwordController.text;
 
     UpdateProfileService().updateProfile(
       token: token,
-      name: name,
-      birthday: birthday,
-      email: email,
       password: password,
     ).then((_) {
       // Manejar el éxito de la actualización del perfil
@@ -66,15 +61,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Name'),
-            TextField(controller: nameController),
-            SizedBox(height: 16.0),
-            Text('Birthday'),
-            TextField(controller: birthdayController),
-            SizedBox(height: 16.0),
-            Text('Email'),
-            TextField(controller: emailController),
-            SizedBox(height: 16.0),
             Text('Password'),
             TextField(controller: passwordController),
             SizedBox(height: 16.0),

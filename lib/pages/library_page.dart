@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:Kiboowi/pages/initial_page.dart';
-import 'package:Kiboowi/pages/pending_page.dart'; //widgets
+import 'package:Kiboowi/models/home_model.dart';
+import 'package:Kiboowi/services/library_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+//213340@ds.upchiapas.edu.mx
 
 class MyLibraryPage extends StatefulWidget {//widgets
   const MyLibraryPage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -12,8 +13,28 @@ class MyLibraryPage extends StatefulWidget {//widgets
 }
 
 class _MyLibraryPageState extends State<MyLibraryPage> {
-  //state
+  late Future<List<HomeModel>> futureHome = Future.value([]);
 
+  @override
+  void initState() {
+    super.initState();
+    fetchHomeData();
+  }
+  Future<void> fetchHomeData() async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString('token');
+    print('Token recuperado de SharedPreferences: $token');
+
+    if (token != null) {
+      HomeService homeService = HomeService();
+      setState(() {
+        futureHome = homeService.fetchhome(token);
+      });
+    } else {
+      // Si no hay un token almacenado, redirigir al usuario al inicio de sesión
+      // o mostrar un mensaje de error
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Color bar = Color(0xFFDDA15E);
@@ -21,6 +42,7 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
       home: Scaffold(
         body: Stack(
           children: [
+            // Fondo de pantalla
             Container(
               width: double.infinity,
               height: double.infinity,
@@ -31,15 +53,15 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
                 ),
               ),
             ),
+            // Contenido
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.only(left: 55),
-                  // Margen izquierdo para el texto
+                  padding: EdgeInsets.only(left: 55), // Ajusta el margen izquierdo aquí
                   child: Text(
-                    'Biblioteca',
+                    'Libros actuales',
                     style: TextStyle(
                       fontFamily: 'Manrope',
                       fontSize: 25,
@@ -72,36 +94,32 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                // Espacio entre el buscador y la sección de libros
-                // Sección de libros con desplazamiento
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 10),
-                          _buildBookRow(
-                              'assets/img/estrellas.png', 'Estrellas fugaces', 'Robyn Schneider',
-                              'assets/img/limpio.png', 'Código limpio', 'Robert C. Martin'
-                          ),
-                          _buildBookRow(
-                              'assets/img/ladrona.png', 'Romeo y Julieta ', 'William Shakespeare',
-                              'assets/img/boulevard.png', 'Diario de Ana Frank', 'Ana Frank'
-                          ),
-                          _buildBookRow(
-                              'assets/img/llamas.png', 'En llamas', 'Suzanne Collins',
-                              'assets/img/principe.png', 'El principito', 'Robert C. Martin'
-                          ),
-                          _buildBookRow(
-                              'assets/img/100 años.png', '100 años de soledad', 'Gabriel Gracía Marquez',
-                              'assets/img/atomicos.png', 'Hábitos atómicos', 'James Clear'
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+
+                FutureBuilder<List<HomeModel>>(
+                  future: futureHome,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      print("Libros obtenidos correctamente: ${snapshot.data}");
+                      // Construye tus widgets utilizando los datos en snapshot.data
+                      return Expanded(
+                        child: GridView.count(
+                          crossAxisCount: 2, // Muestra dos columnas
+                          crossAxisSpacing: 5, // Espaciado horizontal entre elementos
+                          mainAxisSpacing: 15, // Espaciado vertical entre elementos
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          children: snapshot.data!.map((book) {
+                            return _buildBookRow(book);
+                          }).toList(),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -109,6 +127,7 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+
           items: [
             BottomNavigationBarItem(
               backgroundColor: bar,
@@ -129,7 +148,6 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
               label: '',
             ),
             BottomNavigationBarItem(
-              backgroundColor: bar,
               icon: GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, '/pending');
@@ -171,7 +189,7 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/profile');
                 },
                 child: Image.asset(
                   'assets/icons/profile.png',
@@ -181,98 +199,71 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
               ),
               label: '',
             ),
+
           ],
 
+        ),
+
+      ),
+
+
+    );
+
+  }
+
+  Widget _buildBookRow(HomeModel? product) {
+    if (product == null) {
+      return Container(); // O un widget alternativo o mensaje de error
+    }
+
+    return GestureDetector(
+      onTap: () {
+        _onBookClicked(product.id);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Image.network(
+                product.imageUrl ?? '', // Verifica que imageUrls no sea null
+                width: 80,
+                height: 120,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Text(
+              product.bookName ?? '', // Verifica que bookName no sea null
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            Text(
+              product.authorName ?? '', // Verifica que authorName no sea null
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 12,
+                color: Colors.black,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildBookRow(String imagePath1, String title1, String author1, String imagePath2, String title2, String author2) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Row(
-        children: [
-          // Primer libro
-          Expanded(
-            child: Column(
-              children: [
-                // Imagen del primer libro
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Image.asset(
-                    imagePath1,
-                    width: 80,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // Título del primer libro
-                Text(
-                  title1,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                // Autor del primer libro
-                Text(
-                  author1,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 12,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(width: 16), // Espacio entre los libros
-          // Segundo libro
-          Expanded(
-            child: Column(
-              children: [
-                // Imagen del segundo libro
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Image.asset(
-                    imagePath2,
-                    width: 80,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // Título del segundo libro
-                Text(
-                  title2,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                // Autor del segundo libro
-                Text(
-                  author2,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 12,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+  void _onBookClicked(int bookId) {
+    // Aquí puedes realizar cualquier acción con el ID del libro, por ejemplo, abrir una nueva página
+    print('Se hizo clic en el libro con ID: $bookId');
+    // Puedes navegar a otra página y pasar el ID del libro como argumento
+    Navigator.pushNamed(context, '/book_details', arguments: bookId);
   }
 
 }
+

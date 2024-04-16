@@ -35,7 +35,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
   List<Book> _books = [];
 
   Future<void> _searchBooks(String query) async {
-    final String apiKey = 'AIzaSyDcHXlkT9pt57jqvq-bfEaMtZvr-aOzfPU';
+    final String apiKey = 'AIzaSyCZMlNa8X_5iIYx1640hAovvGof31vkBd8';
     final String baseUrl =
         'https://www.googleapis.com/books/v1/volumes?q=$query&key=$apiKey';
 
@@ -170,6 +170,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
                       : Icon(Icons.book, color: miColor,),
                   title: Text(book.title),
                   subtitle: Text(book.authors.join(', ')),
+                  //id:Text(book.id),
                 );
               },
             ),

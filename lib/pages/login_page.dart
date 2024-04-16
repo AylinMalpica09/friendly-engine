@@ -86,7 +86,7 @@ class _MyLoginPageState extends State<MyLogInPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 28),
                   // Resto del contenido del formulario
                   TextField(
                     controller: email,
@@ -106,7 +106,7 @@ class _MyLoginPageState extends State<MyLogInPage> {
                     ),
                     style: TextStyle(color: miColor, fontSize: 15),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 12),
                   TextField(
                     controller: password,
                     obscureText: true,

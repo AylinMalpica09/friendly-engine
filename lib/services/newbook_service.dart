@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 class NewBookService {
   Future<void> newBooks({
+    required String id,
     required String authorName,
     required String bookName,
     required String imageUrl,
@@ -13,6 +14,7 @@ class NewBookService {
     required String state,
   }) async {
     print('Enviando datos al servidor:');
+    print('Id: $id');
     print('Autors: $authorName');
     print('Titulo: $bookName');
     print('Imagen: $imageUrl');
@@ -29,6 +31,7 @@ class NewBookService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+          'id': id,
           'authorName': authorName,
           'bookName': bookName,
           'imageUrl': imageUrl,

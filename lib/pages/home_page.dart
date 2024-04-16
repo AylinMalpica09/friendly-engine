@@ -108,18 +108,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       print("Libros obtenidos correctamente: ${snapshot.data}");
                       // Construye tus widgets utilizando los datos en snapshot.data
                       return Expanded(
-                        child: SingleChildScrollView(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 10),
-                                for (HomeModel product in snapshot.data!)
-                                  _buildBookRow(product),
-                              ],
-                            ),
-                          ),
+                        child: GridView.count(
+                          crossAxisCount: 2, // Muestra dos columnas
+                          crossAxisSpacing: 5, // Espaciado horizontal entre elementos
+                          mainAxisSpacing: 15, // Espaciado vertical entre elementos
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          children: snapshot.data!.map((book) {
+                            return _buildBookRow(book);
+                          }).toList(),
                         ),
                       );
                     }
@@ -220,43 +216,54 @@ class _MyHomePageState extends State<MyHomePage> {
       return Container(); // O un widget alternativo o mensaje de error
     }
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Image.network(
-              product.imageUrl ?? '', // Verifica que imageUrls no sea null
-              width: 80,
-              height: 120,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        _onBookClicked(product.id);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Image.network(
+                product.imageUrl ?? '', // Verifica que imageUrls no sea null
+                width: 80,
+                height: 120,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Text(
-            product.bookName ?? '', // Verifica que bookName no sea null
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Manrope',
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+            Text(
+              product.bookName ?? '', // Verifica que bookName no sea null
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
-          ),
-          Text(
-            product.authorName ?? '', // Verifica que authorName no sea null
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Manrope',
-              fontSize: 12,
-              color: Colors.black,
+            Text(
+              product.authorName ?? '', // Verifica que authorName no sea null
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 12,
+                color: Colors.black,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
+  void _onBookClicked(int bookId) {
+    // Aquí puedes realizar cualquier acción con el ID del libro, por ejemplo, abrir una nueva página
+    print('Se hizo clic en el libro con ID: $bookId');
+    // Puedes navegar a otra página y pasar el ID del libro como argumento
+    Navigator.pushNamed(context, '/book_details', arguments: bookId);
+  }
 
 }
 

@@ -5,7 +5,7 @@ import 'package:Kiboowi/pages/initial_page.dart';
 import 'package:Kiboowi/pages/library_page.dart';
 import 'package:Kiboowi/pages/pending_page.dart';
 import 'package:Kiboowi/pages/profile_page2.dart';
-
+import 'package:Kiboowi/pages/BookDetailsPage.dart';
 
 void main() {
 
