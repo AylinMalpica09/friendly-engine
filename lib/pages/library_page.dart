@@ -57,11 +57,11 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 40),
                 Padding(
                   padding: EdgeInsets.only(left: 55), // Ajusta el margen izquierdo aquí
                   child: Text(
-                    'Libros actuales',
+                    'Libros por leer',
                     style: TextStyle(
                       fontFamily: 'Manrope',
                       fontSize: 25,
@@ -93,7 +93,7 @@ class _MyLibraryPageState extends State<MyLibraryPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 50),
 
                 FutureBuilder<List<HomeModel>>(
                   future: futureHome,

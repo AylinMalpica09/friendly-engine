@@ -122,13 +122,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           style: TextStyle(
                             fontFamily: 'Manrope',
                             fontSize: 18,
-                            fontWeight: FontWeight.w300,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         Center(
                           child: Column(
                             children: [
-                              SizedBox(height: 16), // Espacio entre el texto y el contenedor
+                              SizedBox(height: 40), // Espacio entre el texto y el contenedor
                               Container(
                                 margin: EdgeInsets.symmetric(
                                     horizontal: 10), // Ajusta los márgenes horizontalmente

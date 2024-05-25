@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 40),
                 Padding(
                   padding: EdgeInsets.only(left: 55), // Ajusta el margen izquierdo aquí
                   child: Text(
@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 50),
 
                 FutureBuilder<List<HomeModel>>(
                   future: futureHome,
